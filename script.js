@@ -1,13 +1,7 @@
 :root {
-    --brand-primary: #2d55cc; 
-    --brand-accent: #FACC15; 
-    --bg-dark: #0f172a;
-    --bg-card: #1e293b; 
-    --text-main: #f1f5f9; 
-    --text-dim: #94a3b8; 
-    --border-glass: rgba(255, 255, 255, 0.1);
-    --sidebar-width: 280px; 
-    --success-green: #22c55e;
+    --brand-primary: #2d55cc; --brand-accent: #FACC15; --bg-dark: #0f172a;
+    --bg-card: #1e293b; --text-main: #f1f5f9; --text-dim: #94a3b8; --border-glass: rgba(255, 255, 255, 0.1);
+    --sidebar-width: 280px; --success-green: #22c55e;
 }
 
 * { box-sizing: border-box; }
@@ -105,42 +99,13 @@ body {
 .summary-table th, .master-table th { background: #003162; padding: 16px; font-size: 0.7rem; color: var(--brand-accent); font-weight: 800; border-bottom: 2px solid var(--border-glass); text-transform: uppercase; }
 .summary-table td, .master-table td { padding: 12px; text-align: center; font-size: 0.82rem; border-bottom: 1px solid var(--border-glass); color: var(--text-main); position: relative; }
 
-/* TOOLTIPS - FINALIZED FIX */
-[data-tooltip] { cursor: help; position: relative; }
-
+/* TOOLTIPS */
+[data-tooltip] { cursor: help; }
 [data-tooltip]:hover::after {
-    content: attr(data-tooltip); 
-    position: absolute; 
-    bottom: 125%; 
-    left: 50%; 
-    transform: translateX(-50%);
-    background: #00ffff; 
-    color: Black; 
-    padding: 12px; 
-    border-radius: 8px; 
-    font-size: 0.75rem; 
-    white-space: pre; 
-    z-index: 10000; 
-    box-shadow: 0 10px 20px rgba(94, 255, 94,0.5); 
-    border: 1px solid var(--brand-accent); 
-    text-align: left; 
-    line-height: 1.4;
-    pointer-events: none;
+    content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+    background: #00ffff; color: Black; padding: 12px; border-radius: 8px; font-size: 0.75rem; 
+    white-space: pre; z-index: 10000; box-shadow: 0 10px 20px rgba(94, 255, 94,0.5); border: 1px solid var(--brand-accent); text-align: left; line-height: 1.4;
 }
-
-/* Fix for top rows (1-3): flip tooltip downward */
-tr:nth-child(-n+3) [data-tooltip]:hover::after {
-    bottom: auto;
-    top: 125%;
-}
-
-/* Fix for footer/Total row: Ensure it stays above but doesn't get cut by container */
-tfoot tr [data-tooltip]:hover::after,
-#summaryFooter tr [data-tooltip]:hover::after {
-    bottom: 135%; /* Lift slightly higher */
-    top: auto;
-}
-
 .tooltip-edge[data-tooltip]:hover::after { left: auto; right: 0; transform: translateX(0); }
 
 .search-container { 
