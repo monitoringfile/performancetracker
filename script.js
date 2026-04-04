@@ -2,22 +2,28 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getDatabase, ref, onValue, update, remove, push, set, serverTimestamp, onDisconnect } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-const firebaseConfig = { apiKey: "AIzaSyCmfUxwaeAyoTTlLvU6qHwT22MGtcLa2aU", databaseURL: "https://mis-tracker-83357-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "mis-tracker-83357" };
+const firebaseConfig = { 
+    apiKey: "AIzaSyCmfUxwaeAyoTTlLvU6qHwT22MGtcLa2aU", 
+    databaseURL: "https://mis-tracker-83357-default-rtdb.asia-southeast1.firebasedatabase.app", 
+    projectId: "mis-tracker-83357" 
+};
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 const dbRef = ref(db, 'client_records');
 const capRef = ref(db, 'captured_folders');
 
-let rawData = null; let capturedData = {};
+let rawData = null; 
+let capturedData = {};
 const branches = ["Balingasag - Main2", "Balingoan - Main2", "Camiguin - Main2", "Claveria - Main2", "Gingoog - Main2", "Salay - Main"];
 const products = ["Mauswagon Reloan", "Supplemental Reloan", "New Supplemental", "Newloan", "Balik RMF", "Saver's"];
 
-// Init branch options
-branches.forEach(b => {
-    const el = document.getElementById('fBranch');
-    if(el) el.add(new Option(b, b));
-});
+// Populate Branch Select
+const branchSelect = document.getElementById('fBranch');
+if (branchSelect) {
+    branches.forEach(b => branchSelect.add(new Option(b, b)));
+}
 
 setInterval(() => { 
     const clock = document.getElementById('live-clock');
@@ -38,7 +44,11 @@ onAuthStateChanged(auth, (user) => {
         listenForUsers();
 
         onValue(dbRef, (snap) => { rawData = snap.val(); renderDashboard(); });
-        onValue(capRef, (snap) => { capturedData = snap.val() || {}; renderDashboard(); if(document.getElementById('capturedModalOverlay').style.display === 'flex') renderCapturedGrid(); });
+        onValue(capRef, (snap) => { 
+            capturedData = snap.val() || {}; 
+            renderDashboard(); 
+            if(document.getElementById('capturedModalOverlay').style.display === 'flex') renderCapturedGrid(); 
+        });
 
         if(!isFirstLoad) showToast(`WELCOME BACK, ${userName}`);
         isFirstLoad = false;
@@ -49,6 +59,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+// Auth Listeners
 document.getElementById('loginBtn').addEventListener('click', () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('pass').value;
@@ -95,8 +106,10 @@ const fmt = (n) => n === 0 ? "" : n;
 const getTooltipText = (o) => Object.entries(o).filter(([k,v]) => v > 0).map(([k,v]) => `${k}: ${v}`).join('\n') || "No data";
 
 window.renderDashboard = function() {
-    const mBody = document.getElementById('masterBody'); const sBody = document.getElementById('summaryBody');
-    const sFoot = document.getElementById('summaryFooter'); const pSide = document.getElementById('sidebarProductBody');
+    const mBody = document.getElementById('masterBody'); 
+    const sBody = document.getElementById('summaryBody');
+    const sFoot = document.getElementById('summaryFooter'); 
+    const pSide = document.getElementById('sidebarProductBody');
     const query = document.getElementById('searchBar').value.toLowerCase();
     const selDay = document.getElementById('filterDay').value;
     const selStatus = document.getElementById('filterStatus').value;
@@ -134,7 +147,7 @@ window.renderDashboard = function() {
         Object.entries(rawData).reverse().forEach(([id, rec]) => {
             const status = rec.status || "Select"; 
             const pId = rec.productId;
-            const isReloan = pId.includes("Reloan");
+            const isReloan = pId?.includes("Reloan");
             if (prodGlobal[pId] !== undefined) prodGlobal[pId]++;
 
             if (stats[rec.branch]) {
@@ -181,9 +194,9 @@ window.renderDashboard = function() {
                 else if (status === 'Findings') rCls = 'row-findings'; 
                 else if (status === 'Claimed') rCls = 'row-claimed'; 
                 else if (status === 'For Process') rCls = 'row-process';
-                  else if (status === 'Disbursed') rCls = 'row-disbursed';
-                  else if (status === 'Approved') rCls = 'row-approved';
-                   else if (status === 'Pending Approval') rCls = 'row-pending';
+                else if (status === 'Disbursed') rCls = 'row-disbursed';
+                else if (status === 'Approved') rCls = 'row-approved';
+                else if (status === 'Pending Approval') rCls = 'row-pending';
 
                 let apprDisp = (rec.source === 'import') ? 
                     `<input type="checkbox" ${rec.approaches?.a1?'checked':''} onchange="upAppr('${id}',1,this.checked)">
@@ -291,7 +304,8 @@ window.toggleModal = (s) => document.getElementById('modalOverlay').style.displa
 window.secureAction = (type) => { if (prompt("PIN:") === "1234") { if (type === 'wipe') remove(dbRef); else if (type === 'wipeCaptured') remove(capRef); else document.getElementById('csvFileInput').click(); } };
 
 window.validateCentre = function(input) { 
-    let v = input.value.toUpperCase(); input.value = v; 
+    let v = input.value.toUpperCase(); 
+    input.value = v; 
     const d = document.getElementById('fDay'); 
     if (v.startsWith("MA") || v.startsWith("MB")) d.value = "Monday"; 
     else if (v.startsWith("TA") || v.startsWith("TB")) d.value = "Tuesday"; 
@@ -300,19 +314,22 @@ window.validateCentre = function(input) {
     else d.value = "Incorrect Format - Center Name"; 
 };
 
-document.getElementById('clientForm').onsubmit = (e) => { 
-    e.preventDefault(); 
-    push(dbRef, { 
-        branch: document.getElementById('fBranch').value, 
-        clientName: document.getElementById('fClient').value, 
-        officer: document.getElementById('fOfficer').value, 
-        centre: document.getElementById('fCentre').value, 
-        productId: document.getElementById('fProduct').value, 
-        meetingDay: document.getElementById('fDay').value, 
-        status: "Select", 
-        source: "manual" 
-    }).then(() => { 
-        toggleModal(false); 
-        e.target.reset(); 
-    }); 
-};
+const clientForm = document.getElementById('clientForm');
+if (clientForm) {
+    clientForm.onsubmit = (e) => { 
+        e.preventDefault(); 
+        push(dbRef, { 
+            branch: document.getElementById('fBranch').value, 
+            clientName: document.getElementById('fClient').value, 
+            officer: document.getElementById('fOfficer').value, 
+            centre: document.getElementById('fCentre').value, 
+            productId: document.getElementById('fProduct').value, 
+            meetingDay: document.getElementById('fDay').value, 
+            status: "Select", 
+            source: "manual" 
+        }).then(() => { 
+            toggleModal(false); 
+            e.target.reset(); 
+        }); 
+    };
+}
