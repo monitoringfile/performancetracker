@@ -1,335 +1,183 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getDatabase, ref, onValue, update, remove, push, set, serverTimestamp, onDisconnect } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-
-const firebaseConfig = { 
-    apiKey: "AIzaSyCmfUxwaeAyoTTlLvU6qHwT22MGtcLa2aU", 
-    databaseURL: "https://mis-tracker-83357-default-rtdb.asia-southeast1.firebasedatabase.app", 
-    projectId: "mis-tracker-83357" 
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const dbRef = ref(db, 'client_records');
-const capRef = ref(db, 'captured_folders');
-
-let rawData = null; 
-let capturedData = {};
-const branches = ["Balingasag - Main2", "Balingoan - Main2", "Camiguin - Main2", "Claveria - Main2", "Gingoog - Main2", "Salay - Main"];
-const products = ["Mauswagon Reloan", "Supplemental Reloan", "New Supplemental", "Newloan", "Balik RMF", "Saver's"];
-
-// Populate Branch Select
-const branchSelect = document.getElementById('fBranch');
-if (branchSelect) {
-    branches.forEach(b => branchSelect.add(new Option(b, b)));
+:root {
+    --brand-primary: #2d55cc; 
+    --brand-accent: #FACC15; 
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b; 
+    --text-main: #f1f5f9; 
+    --text-dim: #94a3b8; 
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --sidebar-width: 280px; 
+    --success-green: #22c55e;
 }
 
-setInterval(() => { 
-    const clock = document.getElementById('live-clock');
-    if(clock) clock.innerText = new Date().toLocaleString(); 
-}, 1000);
+* { box-sizing: border-box; }
 
-// --- AUTHENTICATION & PRESENCE LOGIC ---
-let isFirstLoad = true;
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const userName = user.email.split('@')[0].toUpperCase();
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('app-wrapper').style.display = 'flex';
-        document.getElementById('current-user').innerText = userName;
-
-        managePresence(user.uid, userName);
-        listenForUsers();
-
-        onValue(dbRef, (snap) => { rawData = snap.val(); renderDashboard(); });
-        onValue(capRef, (snap) => { 
-            capturedData = snap.val() || {}; 
-            renderDashboard(); 
-            if(document.getElementById('capturedModalOverlay').style.display === 'flex') renderCapturedGrid(); 
-        });
-
-        if(!isFirstLoad) showToast(`WELCOME BACK, ${userName}`);
-        isFirstLoad = false;
-    } else {
-        document.getElementById('login-overlay').style.display = 'flex';
-        document.getElementById('app-wrapper').style.display = 'none';
-        isFirstLoad = false;
-    }
-});
-
-// Auth Listeners
-document.getElementById('loginBtn').addEventListener('click', () => {
-    const e = document.getElementById('email').value;
-    const p = document.getElementById('pass').value;
-    signInWithEmailAndPassword(auth, e, p).catch(err => alert("⚠️ ACCESS DENIED: Invalid Credentials"));
-});
-
-document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
-
-function managePresence(uid, name) {
-    const userStatusRef = ref(db, `online_users/${uid}`);
-    const connectedRef = ref(db, ".info/connected");
-    onValue(connectedRef, (snap) => {
-        if (snap.val() === true) {
-            onDisconnect(userStatusRef).remove();
-            set(userStatusRef, { name: name, lastActive: Date.now() });
-        }
-    });
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background-color: var(--bg-dark); 
+    color: var(--text-main); 
+    margin: 0; 
+    display: flex; 
+    min-height: 100vh; 
+    overflow-x: hidden; 
 }
 
-function listenForUsers() {
-    const listContainer = document.getElementById('active-users-list');
-    onValue(ref(db, 'online_users'), (snapshot) => {
-        listContainer.innerHTML = '';
-        const users = snapshot.val() || {};
-        Object.values(users).forEach(u => {
-            if (u && u.name && u.name !== "UNDEFINED" && u.name.trim() !== "") {
-                const item = document.createElement('div');
-                item.className = 'user-pill';
-                item.innerHTML = `<span class="status-dot"></span> ${u.name}`;
-                listContainer.appendChild(item);
-            }
-        });
-    });
+/* LOGIN & AUTH STYLES */
+#login-overlay { 
+    position: fixed; inset: 0; background: var(--bg-dark); z-index: 5000; 
+    display: flex; align-items: center; justify-content: center; 
+}
+.auth-box { 
+    background: var(--bg-card); padding: 40px; border-radius: 20px; 
+    border: 1px solid var(--border-glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7); 
+    width: 340px; text-align: center; 
+}
+.auth-input { 
+    background: var(--bg-dark); border: 1px solid #334155; color: white; padding: 12px; 
+    border-radius: 10px; font-size: 0.9rem; outline: none; width: 100%; box-sizing: border-box; margin-bottom: 15px; 
+}
+.auth-input:focus { border-color: var(--brand-accent); }
+.auth-btn { 
+    background: var(--brand-accent); color: black; border: none; padding: 12px; 
+    border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.2s;
+}
+.auth-btn:hover { opacity: 0.9; }
+
+#toast {
+    position: fixed; bottom: 30px; left: 30px; background: var(--success-green); color: white;
+    padding: 12px 25px; border-radius: 8px; font-weight: 700; font-size: 0.8rem;
+    display: none; z-index: 10000; animation: slideIn 0.5s ease-out; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+@keyframes slideIn { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* MAIN APP WRAPPER */
+#app-wrapper { display: none; width: 100%; min-height: 100vh; flex-direction: row; }
+
+/* SIDEBAR STYLES */
+.sidebar { 
+    width: var(--sidebar-width); 
+    background: linear-gradient(180deg, #003973 0%, #0073aa 100%); 
+    padding: 1.5rem 1.5rem; 
+    position: fixed; 
+    height: 100vh; 
+    border-right: 1px solid var(--border-glass); 
+    display: flex; 
+    flex-direction: column; 
+    z-index: 50;
+    box-shadow: 30px 0 70px rgba(147, 255, 255,0.3);
+    overflow-y: auto;
+}
+.sidebar-brand { padding: 0 0.5rem 2rem 0.5rem; margin-bottom: 1rem; }
+.brand-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; line-height: 1; }
+.brand-tag { 
+    display: inline-block; margin-top: 8px; background: rgba(250, 204, 21, 0.1); 
+    color: var(--brand-accent); font-size: 0.65rem; font-weight: 800; padding: 4px 10px; 
+    border-radius: 20px; border: 1px solid rgba(0, 0, 64, 0.3); text-transform: uppercase;
 }
 
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
+.nav-link { 
+    padding: 12px 16px; border-radius: 12px; color: #e2e8f0; text-decoration: none; 
+    font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; cursor: pointer; 
+    display: flex; align-items: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 3px solid transparent;
+}
+.nav-link:hover { background: rgba(255, 255, 0, 0.05); color: #ff0; transform: translateX(5px); border-left: 3px solid var(--brand-accent); }
+.nav-link.active { background: var(--brand-accent); color: #000; box-shadow: 0 10px 20px rgba(255, 255, 0, 0.2); border-left: 3px solid #000; }
+
+.product-mix-container { 
+    margin-top: 20px; padding: 1.25rem; background: rgba(255, 255, 255, 0.03); 
+    border-radius: 16px; border: 1px solid var(--border-glass); backdrop-filter: blur(10px);
 }
 
-// --- DASHBOARD LOGIC ---
-const fmt = (n) => n === 0 ? "" : n;
-const getTooltipText = (o) => Object.entries(o).filter(([k,v]) => v > 0).map(([k,v]) => `${k}: ${v}`).join('\n') || "No data";
-
-window.renderDashboard = function() {
-    const mBody = document.getElementById('masterBody'); 
-    const sBody = document.getElementById('summaryBody');
-    const sFoot = document.getElementById('summaryFooter'); 
-    const pSide = document.getElementById('sidebarProductBody');
-    const query = document.getElementById('searchBar').value.toLowerCase();
-    const selDay = document.getElementById('filterDay').value;
-    const selStatus = document.getElementById('filterStatus').value;
-    
-    mBody.innerHTML = ""; sBody.innerHTML = ""; sFoot.innerHTML = ""; pSide.innerHTML = "";
-    let stats = {}; let prodGlobal = {}; products.forEach(p => prodGlobal[p] = 0);
-    
-    let area = { 
-        prospects: 0, approached: 0, captured: 0, proc: 0, pend: 0, app: 0, disb: 0, clmd: 0, find: 0, clmdP: 0,
-        capR: 0, capN: 0,
-        prosDetail: {}, procDetail: {}, pendDetail: {}, appDetail: {}, disbDetail: {}, clmdDetail: {}, findDetail: {},
-        appStatus: { proc: 0, pend: 0, app: 0, disb: 0, clmd: 0, find: 0 },
-        convDetail: { appClmd: 0, appNotClmd: 0, directClmd: 0 },
-        capConvDetail: { rClmd: 0, nClmd: 0, rNotClmd: 0, nNotClmd: 0 }
-    };
-
-    branches.forEach(b => {
-        let bCapR = 0, bCapN = 0;
-        for(let d=1; d<=31; d++) { 
-            bCapR += parseInt(capturedData[`${b}_Reloan_${d}`] || 0); 
-            bCapN += parseInt(capturedData[`${b}_Newloan_${d}`] || 0); 
-        }
-        stats[b] = { 
-            prospects: 0, approached: 0, captured: (bCapR + bCapN), proc: 0, pend: 0, app: 0, disb: 0, clmd: 0, find: 0, clmdP: 0,
-            capR: bCapR, capN: bCapN,
-            prosDetail: {}, procDetail: {}, pendDetail: {}, appDetail: {}, disbDetail: {}, clmdDetail: {}, findDetail: {},
-            appStatus: { proc: 0, pend: 0, app: 0, disb: 0, clmd: 0, find: 0 },
-            convDetail: { appClmd: 0, appNotClmd: 0, directClmd: 0 },
-            capConvDetail: { rClmd: 0, nClmd: 0, rNotClmd: 0, nNotClmd: 0 }
-        };
-        area.captured += (bCapR + bCapN); area.capR += bCapR; area.capN += bCapN;
-    });
-
-    if (rawData) {
-        Object.entries(rawData).reverse().forEach(([id, rec]) => {
-            const status = rec.status || "Select"; 
-            const pId = rec.productId;
-            const isReloan = pId?.includes("Reloan");
-            if (prodGlobal[pId] !== undefined) prodGlobal[pId]++;
-
-            if (stats[rec.branch]) {
-                const s = stats[rec.branch];
-                const isAppr = (rec.approaches?.a1 || rec.approaches?.a2 || rec.approaches?.a3 || rec.approaches?.a4);
-                const map = { 'For Process':'proc','Pending Approval':'pend','Approved':'app','Disbursed':'disb','Claimed':'clmd','Findings':'find' };
-                const key = map[status];
-
-                if (rec.source === 'import') {
-                    s.prospects++; area.prospects++;
-                    s.prosDetail[pId] = (s.prosDetail[pId] || 0) + 1;
-                    area.prosDetail[pId] = (area.prosDetail[pId] || 0) + 1;
-                    
-                    if (isAppr) {
-                        s.approached++; area.approached++;
-                        if (key) { s.appStatus[key]++; area.appStatus[key]++; }
-                        if (status === 'Claimed') { 
-                            s.clmdP++; area.clmdP++; 
-                            s.convDetail.appClmd++; area.convDetail.appClmd++;
-                        } else {
-                            s.convDetail.appNotClmd++; area.convDetail.appNotClmd++;
-                        }
-                    } else if (status === 'Claimed') {
-                        s.convDetail.directClmd++; area.convDetail.directClmd++;
-                    }
-                }
-
-                if (key) {
-                    s[key]++; area[key]++;
-                    s[key + 'Detail'][pId] = (s[key + 'Detail'][pId] || 0) + 1;
-                    area[key + 'Detail'][pId] = (area[key + 'Detail'][pId] || 0) + 1;
-
-                    if (status === 'Claimed') {
-                        if (isReloan) { s.capConvDetail.rClmd++; area.capConvDetail.rClmd++; }
-                        else { s.capConvDetail.nClmd++; area.capConvDetail.nClmd++; }
-                    }
-                }
-            }
-
-            const matchSearch = (rec.clientName?.toLowerCase().includes(query) || rec.officer?.toLowerCase().includes(query) || rec.branch?.toLowerCase().includes(query) || rec.centre?.toLowerCase().includes(query));
-            if (matchSearch && (selDay === "" || rec.meetingDay === selDay) && (selStatus === "" || status === selStatus)) {
-                let rCls = ""; 
-                if (rec.isDefault === "1" || rec.isDefault?.toLowerCase() === "df" || rec.isDefault?.toLowerCase() === "yes") rCls = 'row-default';
-                else if (status === 'Findings') rCls = 'row-findings'; 
-                else if (status === 'Claimed') rCls = 'row-claimed'; 
-                else if (status === 'For Process') rCls = 'row-process';
-                else if (status === 'Disbursed') rCls = 'row-disbursed';
-                else if (status === 'Approved') rCls = 'row-approved';
-                else if (status === 'Pending Approval') rCls = 'row-pending';
-
-                let apprDisp = (rec.source === 'import') ? 
-                    `<input type="checkbox" ${rec.approaches?.a1?'checked':''} onchange="upAppr('${id}',1,this.checked)">
-                     <input type="checkbox" ${rec.approaches?.a2?'checked':''} onchange="upAppr('${id}',2,this.checked)">
-                     <input type="checkbox" ${rec.approaches?.a3?'checked':''} onchange="upAppr('${id}',3,this.checked)">
-                     <input type="checkbox" ${rec.approaches?.a4?'checked':''} onchange="upAppr('${id}',4,this.checked)">` : `<small>From Manual Entry</small>`;
-                
-                mBody.insertAdjacentHTML('beforeend', `<tr class="${rCls}"><td>${rec.branch}<br>${rec.meetingDay || ''} / ${rec.centre || ''}</td><td><strong>${rec.clientName}</strong> <span onclick="navigator.clipboard.writeText('${rec.clientName}')" style="cursor:pointer">📋</span><br><small>${rec.officer}</small></td><td>${rec.productId}</td><td>${apprDisp}</td><td>${rec.isDefault||''}</td><td><select onchange="updateStatus('${id}', this.value)" class="input-styled"><option value="Select">...</option><option value="For Process" ${status==='For Process'?'selected':''}>For Process</option><option value="Pending Approval" ${status==='Pending Approval'?'selected':''}>Pending Approval</option><option value="Approved" ${status==='Approved'?'selected':''}>Approved</option><option value="Disbursed" ${status==='Disbursed'?'selected':''}>Disbursed</option><option value="Claimed" ${status==='Claimed'?'selected':''}>Claimed</option><option value="Findings" ${status==='Findings'?'selected':''}>Findings</option></select></td><td><input type="text" value="${rec.remarks||''}" onblur="updateRemarks('${id}', this.value)" style="width:100%; border:none; background:transparent; color:inherit;"></td><td><button onclick="delRec('${id}')" style="background:none; border:none; cursor:pointer;">🗑️</button></td></tr>`);
-            }
-        });
-    }
-
-    branches.forEach(b => {
-        const s = stats[b];
-        const conv = s.approached > 0 ? Math.round((s.clmdP / s.approached) * 100) : 0;
-        const capConv = s.captured > 0 ? Math.round((s.clmd / s.captured) * 100) : 0;
-        s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
-        s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
-
-        sBody.insertAdjacentHTML('beforeend', `
-            <tr>
-                <td style="text-align:left;">${b}</td>
-                <td data-tooltip="${getTooltipText(s.prosDetail)}">${fmt(s.prospects)}</td>
-                <td data-tooltip="Proc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}">${fmt(s.approached)}</td>
-                <td data-tooltip="App. Converted: ${s.convDetail.appClmd}\nApp. Not Converted: ${s.convDetail.appNotClmd}\nConv. But Not Appr: ${s.convDetail.directClmd}" style="color:var(--brand-accent); font-weight:700;">${conv?conv+'%':''}</td>
-                <td data-tooltip="Reloan: ${s.capR}\nNewloan: ${s.capN}" style="background:rgba(255,255,255,0.05)">${fmt(s.captured)}</td>
-                <td data-tooltip="Reloan Clmd: ${s.capConvDetail.rClmd}\nNewloan Clmd: ${s.capConvDetail.nClmd}\nReloan Not Clmd: ${s.capConvDetail.rNotClmd}\nNewloan Not Clmd: ${s.capConvDetail.nNotClmd}" style="color:var(--brand-accent); font-weight:700;">${capConv?capConv+'%':''}</td>
-                <td data-tooltip="${getTooltipText(s.procDetail)}">${fmt(s.proc)}</td>
-                <td data-tooltip="${getTooltipText(s.pendDetail)}">${fmt(s.pend)}</td>
-                <td data-tooltip="${getTooltipText(s.appDetail)}">${fmt(s.app)}</td>
-                <td data-tooltip="${getTooltipText(s.disbDetail)}" class="tooltip-edge">${fmt(s.disb)}</td>
-                <td data-tooltip="${getTooltipText(s.clmdDetail)}" class="tooltip-edge">${fmt(s.clmd)}</td>
-                <td data-tooltip="${getTooltipText(s.findDetail)}" class="tooltip-edge">${fmt(s.find)}</td>
-            </tr>`);
-    });
-
-    const areaConv = area.approached > 0 ? Math.round((area.clmdP / area.approached) * 100) : 0;
-    const areaCapConv = area.captured > 0 ? Math.round((area.clmd / area.captured) * 100) : 0;
-    area.capConvDetail.rNotClmd = Math.max(0, area.capR - area.capConvDetail.rClmd);
-    area.capConvDetail.nNotClmd = Math.max(0, area.capN - area.capConvDetail.nClmd);
-
-    sFoot.innerHTML = `
-        <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
-            <td style="text-align:left;">AREA TOTAL</td>
-            <td data-tooltip="${getTooltipText(area.prosDetail)}">${area.prospects}</td>
-            <td data-tooltip="Proc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}">${area.approached}</td>
-            <td data-tooltip="App. Converted: ${area.convDetail.appClmd}\nApp. Not Converted: ${area.convDetail.appNotClmd}\nConv. But Not Appr: ${area.convDetail.directClmd}">${areaConv?areaConv+'%':''}</td>
-            <td data-tooltip="Reloan: ${area.capR}\nNewloan: ${area.capN}">${area.captured}</td>
-            <td data-tooltip="Reloan Clmd: ${area.capConvDetail.rClmd}\nNewloan Clmd: ${area.capConvDetail.nClmd}\nReloan Not Clmd: ${area.capConvDetail.rNotClmd}\nNewloan Not Clmd: ${area.capConvDetail.nNotClmd}">${areaCapConv?areaCapConv+'%':''}</td>
-            <td data-tooltip="${getTooltipText(area.procDetail)}">${area.proc}</td>
-            <td data-tooltip="${getTooltipText(area.pendDetail)}">${area.pend}</td>
-            <td data-tooltip="${getTooltipText(area.appDetail)}">${area.app}</td>
-            <td data-tooltip="${getTooltipText(area.disbDetail)}" class="tooltip-edge">${area.disb}</td>
-            <td data-tooltip="${getTooltipText(area.clmdDetail)}" class="tooltip-edge">${area.clmd}</td>
-            <td data-tooltip="${getTooltipText(area.findDetail)}" class="tooltip-edge">${area.find}</td>
-        </tr>`;
-        
-    Object.entries(prodGlobal).forEach(([p, count]) => { if (count > 0) pSide.insertAdjacentHTML('beforeend', `<tr><td style="padding: 4px 0;">${p}</td><td style="text-align:right; font-weight: 700;">${count}</td></tr>`); });
-};
-
-window.processFile = function(file) {
-    if (!file) return; const reader = new FileReader(); 
-    reader.onload = async function(e) {
-        const workbook = XLSX.read(e.target.result, { type: 'binary' }); const sheet = workbook.Sheets[workbook.SheetNames[0]]; const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 }); const headers = rows[0].map(h => String(h).toLowerCase().trim()); const dataRows = rows.slice(1);
-        const findIdx = (keywords) => headers.findIndex(h => keywords.some(k => h.includes(k)));
-        const idx = { branch: findIdx(['br','office']), client: findIdx(['clie','name']), officer: findIdx(['ts','officer']), product: findIdx(['prod','loan']), centre: findIdx(['cent','group']), day: findIdx(['day','sch']), def: findIdx(['def','df']) };
-        for (let i = 0; i < dataRows.length; i++) {
-            const r = dataRows[i]; if (!r) continue;
-            await push(dbRef, { branch: idx.branch!==-1?r[idx.branch]:"Unspecified", clientName: idx.client!==-1?r[idx.client]:"N/A", officer: idx.officer!==-1?r[idx.officer]:"N/A", productId: idx.product!==-1?r[idx.product]:"Newloan", centre: idx.centre!==-1?r[idx.centre]:"", meetingDay: idx.day!==-1?r[idx.day]:"Monday", isDefault: (idx.def!==-1 && r[idx.def]!=null)?String(r[idx.def]):"", status: "Select", source: "import", lastUpdated: serverTimestamp() });
-        }
-    };
-    reader.readAsBinaryString(file);
-};
-
-window.openCapturedModal = () => { document.getElementById('capturedModalOverlay').style.display = 'flex'; renderCapturedGrid(); };
-window.closeCapturedModal = () => { document.getElementById('capturedModalOverlay').style.display = 'none'; };
-
-window.renderCapturedGrid = function() {
-    const head = document.getElementById('capturedHead'); const body = document.getElementById('capturedBody'); const foot = document.getElementById('capturedSummary'); const cats = ["Reloan", "Newloan", "C/P Leaders Approached", "Oriented Centers"];
-    head.innerHTML = `<tr><th class="frozen-intersection">BRANCH PERFORMANCE</th>${Array.from({length:31}, (_,i)=>`<th>${i+1}</th>`).join('')}</tr>`;
-    body.innerHTML = ""; let areaCatTotals = { "Reloan": Array(32).fill(0), "Newloan": Array(32).fill(0), "C/P Leaders Approached": Array(32).fill(0), "Oriented Centers": Array(32).fill(0) };
-    branches.forEach(b => {
-        cats.forEach((cat, idx) => {
-            let row = `<tr class="${idx === 3 ? 'branch-divider' : ''}"><td class="captured-row-title">${idx === 0 ? `<span style="color:var(--brand-accent)">${b}</span>` : ''}<br><small>${cat}</small></td>`;
-            for(let d=1; d<=31; d++) {
-                const val = capturedData[`${b}_${cat.replace('/', '_')}_${d}`] || 0; areaCatTotals[cat][d] += parseInt(val);
-                row += `<td><input type="number" value="${val > 0 ? val : ''}" class="captured-input" onblur="updateCaptured('${b}','${cat}',${d},this.value)"></td>`;
-            }
-            body.insertAdjacentHTML('beforeend', row + "</tr>");
-        });
-    });
-    foot.innerHTML = cats.map(cat => {
-        let sRow = `<tr style="background:#020617; color:var(--brand-accent)"><td class="captured-row-title">AREA TOTAL: ${cat}</td>`;
-        for(let d=1; d<=31; d++) { sRow += `<td><strong>${areaCatTotals[cat][d] || 0}</strong></td>`; }
-        return sRow + "</tr>";
-    }).join('');
-};
-
-window.updateCaptured = (b, cat, d, val) => { const path = `${b}_${cat.replace('/', '_')}_${d}`; if(!val) remove(ref(db, `captured_folders/${path}`)); else set(ref(db, `captured_folders/${path}`), parseInt(val)); };
-window.updateStatus = (id, v) => update(ref(db, `client_records/${id}`), { status: v, lastUpdated: serverTimestamp() });
-window.updateRemarks = (id, v) => update(ref(db, `client_records/${id}`), { remarks: v });
-window.upAppr = (id, n, v) => set(ref(db, `client_records/${id}/approaches/a${n}`), v);
-window.delRec = (id) => confirm("Delete?") && remove(ref(db, `client_records/${id}`));
-window.toggleModal = (s) => document.getElementById('modalOverlay').style.display = s ? 'flex' : 'none';
-window.secureAction = (type) => { if (prompt("PIN:") === "1234") { if (type === 'wipe') remove(dbRef); else if (type === 'wipeCaptured') remove(capRef); else document.getElementById('csvFileInput').click(); } };
-
-window.validateCentre = function(input) { 
-    let v = input.value.toUpperCase(); 
-    input.value = v; 
-    const d = document.getElementById('fDay'); 
-    if (v.startsWith("MA") || v.startsWith("MB")) d.value = "Monday"; 
-    else if (v.startsWith("TA") || v.startsWith("TB")) d.value = "Tuesday"; 
-    else if (v.startsWith("WA") || v.startsWith("WB")) d.value = "Wednesday"; 
-    else if (v.startsWith("TH")) d.value = "Thursday"; 
-    else d.value = "Incorrect Format - Center Name"; 
-};
-
-const clientForm = document.getElementById('clientForm');
-if (clientForm) {
-    clientForm.onsubmit = (e) => { 
-        e.preventDefault(); 
-        push(dbRef, { 
-            branch: document.getElementById('fBranch').value, 
-            clientName: document.getElementById('fClient').value, 
-            officer: document.getElementById('fOfficer').value, 
-            centre: document.getElementById('fCentre').value, 
-            productId: document.getElementById('fProduct').value, 
-            meetingDay: document.getElementById('fDay').value, 
-            status: "Select", 
-            source: "manual" 
-        }).then(() => { 
-            toggleModal(false); 
-            e.target.reset(); 
-        }); 
-    };
+/* Active Users */
+.active-users-container { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.user-pill {
+    display: flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-size: 0.75rem;
+    font-weight: 600; color: #fff;
 }
+.status-dot { width: 7px; height: 7px; background: var(--success-green); border-radius: 50%; box-shadow: 0 0 8px var(--success-green); }
+
+/* MAIN CONTENT */
+.main-content { flex: 1; margin-left: var(--sidebar-width); padding: 2.5rem; width: calc(100% - var(--sidebar-width)); }
+.summary-card, .data-section { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-glass); box-shadow: 0 30px 70px rgba(134, 255, 255,0.5); margin-bottom: 2.5rem; overflow-x: auto;}
+.summary-table, .master-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.summary-table th, .master-table th { background: #003162; padding: 16px; font-size: 0.7rem; color: var(--brand-accent); font-weight: 800; border-bottom: 2px solid var(--border-glass); text-transform: uppercase; }
+.summary-table td, .master-table td { padding: 12px; text-align: center; font-size: 0.82rem; border-bottom: 1px solid var(--border-glass); color: var(--text-main); position: relative; }
+
+/* TOOLTIPS - FINALIZED FIX */
+[data-tooltip] { cursor: help; position: relative; }
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip); 
+    position: absolute; 
+    bottom: 125%; 
+    left: 50%; 
+    transform: translateX(-50%);
+    background: #00ffff; 
+    color: Black; 
+    padding: 12px; 
+    border-radius: 8px; 
+    font-size: 0.75rem; 
+    white-space: pre; 
+    z-index: 10000; 
+    box-shadow: 0 10px 20px rgba(94, 255, 94,0.5); 
+    border: 1px solid var(--brand-accent); 
+    text-align: left; 
+    line-height: 1.4;
+    pointer-events: none;
+}
+
+/* Fix for top rows (1-3): flip tooltip downward */
+tr:nth-child(-n+3) [data-tooltip]:hover::after {
+    bottom: auto;
+    top: 125%;
+}
+
+/* Fix for footer/Total row: Ensure it stays above but doesn't get cut by container */
+tfoot tr [data-tooltip]:hover::after,
+#summaryFooter tr [data-tooltip]:hover::after {
+    bottom: 135%; /* Lift slightly higher */
+    top: auto;
+}
+
+.tooltip-edge[data-tooltip]:hover::after { left: auto; right: 0; transform: translateX(0); }
+
+.search-container { 
+    background: rgba(192, 192, 192, 0.5); padding: 15px; border-radius: 12px; display: flex; gap: 12px; 
+    margin-bottom: 1.5rem; border: 2px solid var(--brand-accent); box-shadow: 0 4px 15px rgba(0, 255, 255, 0.15);
+}
+
+/* MODALS */
+.modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.85); z-index:3000; align-items:center; justify-content:center; backdrop-filter: blur(5px); }
+.modal-box-wide { background: #1e293b; padding: 40px; border-radius: 24px; width: 1000px; max-width: 95vw; color: white; border: 1px solid var(--brand-accent); box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+/* CAPTURED TABLE STYLES */
+.captured-modal-box { background: #2e4681; border-radius: 20px; width: 95%; height: 90vh; overflow: auto; border: 1px solid rgba(250, 204, 21, 0.4); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
+.captured-scroll-area { overflow: auto; flex: 1; position: relative; }
+.captured-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.75rem; color: #e5e7eb; }
+.captured-table thead th { position: sticky; top: 0; background: #1f2937; z-index: 20; border-bottom: 2px solid var(--brand-accent); border-right: 1px solid #374151; padding: 12px 5px; color: var(--brand-accent); font-weight: 800; }
+.captured-row-title { position: sticky; left: 0; background: #0f172a; z-index: 15; min-width: 180px; text-align: left !important; padding: 8px 15px !important; font-weight: 700; color: var(--text-dim); border-right: 2px solid var(--brand-accent) !important; }
+.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #1f2937 !important; border-bottom: 2px solid var(--brand-accent) !important; }
+.captured-table td { border-bottom: 1px solid #374151; border-right: 1px solid #374151; padding: 6px; text-align: center; }
+.captured-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+.captured-table tbody tr:hover { background: rgba(250, 204, 21, 0.05); }
+.branch-divider td { border-bottom: 3px solid var(--brand-accent) !important; }
+
+.captured-input { background: rgba(0,0,0,0.2); border: 1px solid transparent; color: #fff; width: 40px; text-align: center; font-weight: 600; border-radius: 4px; padding: 4px 0; transition: all 0.2s; }
+.captured-input:focus { background: #000; border-color: var(--brand-accent); outline: none; box-shadow: 0 0 5px var(--brand-accent); }
+
+/* STATUS ROW COLORS */
+.row-default { background-color: rgba(0, 255, 0, 0.1) !important; color: #09ffff !important; }
+.row-default td { color: #00ffff !important; }
+.row-process { background-color: rgba(89, 89, 172, 0.4) !important; }
+.row-claimed { background-color: rgba(145, 145, 0, 0.4) !important; }
+.row-disbursed { background-color: rgba(0, 128, 64, 0.4) !important; }
+.row-findings { background-color: rgba(185, 37, 0, 0.4) !important; }
+.row-pending { background-color: rgba(230, 115, 0, 0.4) !important; }
+.row-approved { background-color: rgba(0, 149, 149, 0.4) !important; }
+  
+.input-styled { background: #0f172a; border: 1px solid var(--border-glass); color: white; padding: 12px 15px; border-radius: 10px; font-family: inherit; width: 100%; font-size: 0.9rem; }
+.input-styled:focus { border-color: var(--brand-accent); outline: none; }
+label { display: block; font-size: 0.75rem; color: var(--brand-accent); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
