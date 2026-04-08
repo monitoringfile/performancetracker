@@ -146,3 +146,18 @@ body {
 .input-styled { background: #0f172a; border: 1px solid var(--border-glass); color: white; padding: 12px 15px; border-radius: 10px; font-family: inherit; width: 100%; font-size: 0.9rem; }
 .input-styled:focus { border-color: var(--brand-accent); outline: none; }
 label { display: block; font-size: 0.75rem; color: var(--brand-accent); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+
+/* ADD THIS TO YOUR EXISTING style.css */
+
+/* Position tooltips BELOW the text for the top rows */
+.tooltip-top[data-tooltip]:hover::after {
+    bottom: auto !important;
+    top: 125% !important;
+}
+
+/* Ensure area total footer tooltips still show UPWARDS */
+#summaryFooter [data-tooltip]:hover::after {
+    bottom: 125% !important;
+    top: auto !important;
+}
