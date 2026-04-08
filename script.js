@@ -59,7 +59,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Auth Listeners
 document.getElementById('loginBtn').addEventListener('click', () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('pass').value;
@@ -216,20 +215,22 @@ window.renderDashboard = function() {
         s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
         s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
 
+        const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
+
         sBody.insertAdjacentHTML('beforeend', `
             <tr>
                 <td style="text-align:left;">${b}</td>
-                <td data-tooltip="${getTooltipText(s.prosDetail)}">${fmt(s.prospects)}</td>
-                <td data-tooltip="Proc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}">${fmt(s.approached)}</td>
-                <td data-tooltip="App. Converted: ${s.convDetail.appClmd}\nApp. Not Converted: ${s.convDetail.appNotClmd}\nConv. But Not Appr: ${s.convDetail.directClmd}" style="color:var(--brand-accent); font-weight:700;">${conv?conv+'%':''}</td>
-                <td data-tooltip="Reloan: ${s.capR}\nNewloan: ${s.capN}" style="background:rgba(255,255,255,0.05)">${fmt(s.captured)}</td>
-                <td data-tooltip="Reloan Clmd: ${s.capConvDetail.rClmd}\nNewloan Clmd: ${s.capConvDetail.nClmd}\nReloan Not Clmd: ${s.capConvDetail.rNotClmd}\nNewloan Not Clmd: ${s.capConvDetail.nNotClmd}" style="color:var(--brand-accent); font-weight:700;">${capConv?capConv+'%':''}</td>
-                <td data-tooltip="${getTooltipText(s.procDetail)}">${fmt(s.proc)}</td>
-                <td data-tooltip="${getTooltipText(s.pendDetail)}">${fmt(s.pend)}</td>
-                <td data-tooltip="${getTooltipText(s.appDetail)}">${fmt(s.app)}</td>
-                <td data-tooltip="${getTooltipText(s.disbDetail)}" class="tooltip-edge">${fmt(s.disb)}</td>
-                <td data-tooltip="${getTooltipText(s.clmdDetail)}" class="tooltip-edge">${fmt(s.clmd)}</td>
-                <td data-tooltip="${getTooltipText(s.findDetail)}" class="tooltip-edge">${fmt(s.find)}</td>
+                <td class="${rowClass}" data-tooltip="${getTooltipText(s.prosDetail)}">${fmt(s.prospects)}</td>
+                <td class="${rowClass}" data-tooltip="Proc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}">${fmt(s.approached)}</td>
+                <td class="${rowClass}" data-tooltip="App. Converted: ${s.convDetail.appClmd}\nApp. Not Converted: ${s.convDetail.appNotClmd}\nConv. But Not Appr: ${s.convDetail.directClmd}" style="color:var(--brand-accent); font-weight:700;">${conv?conv+'%':''}</td>
+                <td class="${rowClass}" data-tooltip="Reloan: ${s.capR}\nNewloan: ${s.capN}" style="background:rgba(255,255,255,0.05)">${fmt(s.captured)}</td>
+                <td class="${rowClass}" data-tooltip="Total Captured Converted: ${s.capConvDetail.rClmd + s.capConvDetail.nClmd}\nTotal Captured Not Converted: ${s.capConvDetail.rNotClmd + s.capConvDetail.nNotClmd}" style="color:var(--brand-accent); font-weight:700;">${capConv?capConv+'%':''}</td>
+                <td class="${rowClass}" data-tooltip="${getTooltipText(s.procDetail)}">${fmt(s.proc)}</td>
+                <td class="${rowClass}" data-tooltip="${getTooltipText(s.pendDetail)}">${fmt(s.pend)}</td>
+                <td class="${rowClass}" data-tooltip="${getTooltipText(s.appDetail)}">${fmt(s.app)}</td>
+                <td class="${rowClass} tooltip-edge" data-tooltip="${getTooltipText(s.disbDetail)}">${fmt(s.disb)}</td>
+                <td class="${rowClass} tooltip-edge" data-tooltip="${getTooltipText(s.clmdDetail)}">${fmt(s.clmd)}</td>
+                <td class="${rowClass} tooltip-edge" data-tooltip="${getTooltipText(s.findDetail)}">${fmt(s.find)}</td>
             </tr>`);
     });
 
@@ -245,7 +246,7 @@ window.renderDashboard = function() {
             <td data-tooltip="Proc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}">${area.approached}</td>
             <td data-tooltip="App. Converted: ${area.convDetail.appClmd}\nApp. Not Converted: ${area.convDetail.appNotClmd}\nConv. But Not Appr: ${area.convDetail.directClmd}">${areaConv?areaConv+'%':''}</td>
             <td data-tooltip="Reloan: ${area.capR}\nNewloan: ${area.capN}">${area.captured}</td>
-            <td data-tooltip="Reloan Clmd: ${area.capConvDetail.rClmd}\nNewloan Clmd: ${area.capConvDetail.nClmd}\nReloan Not Clmd: ${area.capConvDetail.rNotClmd}\nNewloan Not Clmd: ${area.capConvDetail.nNotClmd}">${areaCapConv?areaCapConv+'%':''}</td>
+            <td data-tooltip="Total Captured Converted: ${area.capConvDetail.rClmd + area.capConvDetail.nClmd}\nTotal Captured Not Converted: ${area.capConvDetail.rNotClmd + area.capConvDetail.nNotClmd}">${areaCapConv?areaCapConv+'%':''}</td>
             <td data-tooltip="${getTooltipText(area.procDetail)}">${area.proc}</td>
             <td data-tooltip="${getTooltipText(area.pendDetail)}">${area.pend}</td>
             <td data-tooltip="${getTooltipText(area.appDetail)}">${area.app}</td>
