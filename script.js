@@ -261,7 +261,7 @@ window.renderDashboard = function() {
     const ap3 = area.apprCounts.a2 > 0 ? Math.round((area.apprCounts.a3 / area.apprCounts.a2) * 100) : 0;
     const ap4 = area.apprCounts.a3 > 0 ? Math.round((area.apprCounts.a4 / area.apprCounts.a3) * 100) : 0;
 
-    const areaAppTooltip = `[OVERALL AREA FUNNEL]\nBox 1/Pros: ${area.apprCounts.a1} (${ap1}%)\nBox 2/Box 1: ${area.apprCounts.a2} (${ap2}%)\nBox 3/Box 2: ${area.apprCounts.a3} (${ap3}%)\nBox 4/Box 3: ${area.apprCounts.a4} (${ap4}%)\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
+    const areaAppTooltip = `[OVERALL AREA FUNNEL]\n1st Apps: ${area.apprCounts.a1} (${ap1}%)\n2nd Apps : ${area.apprCounts.a2} (${ap2}%)\n3rd Apps : ${area.apprCounts.a3} (${ap3}%)\n4th Apps : ${area.apprCounts.a4} (${ap4}%)\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
 
     sFoot.innerHTML = `
         <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
