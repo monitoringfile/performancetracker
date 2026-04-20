@@ -229,7 +229,7 @@ window.renderDashboard = function() {
         const p3 = s.apprCounts.a2 > 0 ? Math.round((s.apprCounts.a3 / s.apprCounts.a2) * 100) : 0;
         const p4 = s.apprCounts.a3 > 0 ? Math.round((s.apprCounts.a4 / s.apprCounts.a3) * 100) : 0;
 
-        const appTooltip = `[BOX FUNNEL ANALYSIS]\nBox 1/Pros: ${s.apprCounts.a1} (${p1}%)\nBox 2/Box 1: ${s.apprCounts.a2} (${p2}%)\nBox 3/Box 2: ${s.apprCounts.a3} (${p3}%)\nBox 4/Box 3: ${s.apprCounts.a4} (${p4}%)\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
+        const appTooltip = `[APPROAPACHED ANALYSIS]\n1st Apps : ${s.apprCounts.a1} (${p1}%)\n2nd Apps : ${s.apprCounts.a2} (${p2}%)\n3rd Apss : ${s.apprCounts.a3} (${p3}%)\n4th Apps : ${s.apprCounts.a4} (${p4}%)\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
 
         const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
 
