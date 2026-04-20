@@ -226,7 +226,7 @@ window.renderDashboard = function() {
         // Calculate Box Percentages relative to total prospects
         const getP = (val) => s.prospects > 0 ? Math.round((val / s.prospects) * 100) + '%' : '0%';
 
-        const appTooltip = `[CHECKBOX PENETRATION vs PROSPECTS]\nBox 1: ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\nBox 2: ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\nBox 3: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\nBox 4: ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
+        const appTooltip = `[CHECKBOX PENETRATION vs PROSPECTS]\n1st Apps : ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\n2nd Apps : ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\n3rd Apps: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\n4th Apps : ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
 
         const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
 
@@ -256,7 +256,7 @@ window.renderDashboard = function() {
     const areaApproachRate = area.prospects > 0 ? Math.round((area.approached / area.prospects) * 100) + '%' : '0%';
     const getAP = (val) => area.prospects > 0 ? Math.round((val / area.prospects) * 100) + '%' : '0%';
 
-    const areaAppTooltip = `[OVERALL AREA APPROACH RATE]\nApproached vs Prospects: ${areaApproachRate}\n\n[CHECKBOX PENETRATION vs PROSPECTS]\n1st Approached: ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\n2nd Approached: ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\n3rd Approached: ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\n4th Approached: ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
+    const areaAppTooltip = `[OVERALL AREA APPROACH RATE]\nApproached vs Prospects: ${areaApproachRate}\n\n[CHECKBOX PENETRATION vs PROSPECTS]\n1st Apps : ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\n2nd Apps : ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\n3rd Apps : ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\n4th Apps : ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
 
     sFoot.innerHTML = `
         <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
