@@ -223,9 +223,13 @@ window.renderDashboard = function() {
         s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
         s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
 
-        // Calculate Box Percentages
+        // Calculate Box Percentages relative to total approached
         const getP = (val) => s.approached > 0 ? Math.round((val / s.approached) * 100) + '%' : '0%';
-        const appTooltip = `[CHECKBOXES]\nBox 1: ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\nBox 2: ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\nBox 3: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\nBox 4: ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
+        
+        // ADJUSTED: Approach Rate calculation relative to Prospects
+        const branchApproachRate = s.prospects > 0 ? Math.round((s.approached / s.prospects) * 100) + '%' : '0%';
+
+        const appTooltip = `[PENETRATION RATE]\nApproached vs Prospects: ${branchApproachRate}\n\n[CHECKBOXES]\nBox 1: ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\nBox 2: ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\nBox 3: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\nBox 4: ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
 
         const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
 
@@ -253,7 +257,11 @@ window.renderDashboard = function() {
 
     // Calculate Area Box Percentages
     const getAP = (val) => area.approached > 0 ? Math.round((val / area.approached) * 100) + '%' : '0%';
-    const areaAppTooltip = `[CHECKBOXES]\nBox 1: ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\nBox 2: ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\nBox 3: ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\nBox 4: ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
+    
+    // ADJUSTED: Area-wide Approach Rate calculation relative to total Prospects
+    const areaApproachRate = area.prospects > 0 ? Math.round((area.approached / area.prospects) * 100) + '%' : '0%';
+
+    const areaAppTooltip = `[PENETRATION RATE]\nApproached vs Prospects: ${areaApproachRate}\n\n[CHECKBOXES]\nBox 1: ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\nBox 2: ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\nBox 3: ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\nBox 4: ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
 
     sFoot.innerHTML = `
         <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
