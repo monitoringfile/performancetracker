@@ -165,7 +165,6 @@ window.renderDashboard = function() {
                     if (isAppr) {
                         s.approached++; area.approached++;
                         
-                        // Track individual Approach Checkboxes
                         if (rec.approaches?.a1) { s.apprCounts.a1++; area.apprCounts.a1++; }
                         if (rec.approaches?.a2) { s.apprCounts.a2++; area.apprCounts.a2++; }
                         if (rec.approaches?.a3) { s.apprCounts.a3++; area.apprCounts.a3++; }
@@ -224,13 +223,17 @@ window.renderDashboard = function() {
         s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
         s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
 
+        // Calculate Box Percentages
+        const getP = (val) => s.approached > 0 ? Math.round((val / s.approached) * 100) + '%' : '0%';
+        const appTooltip = `[CHECKBOXES]\nBox 1: ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\nBox 2: ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\nBox 3: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\nBox 4: ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
+
         const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
 
         sBody.insertAdjacentHTML('beforeend', `
             <tr>
                 <td style="text-align:left;">${b}</td>
                 <td class="${rowClass}" data-tooltip="${getTooltipText(s.prosDetail)}">${fmt(s.prospects)}</td>
-                <td class="${rowClass}" data-tooltip="[CHECKBOXES]\nBox 1: ${s.apprCounts.a1}\nBox 2: ${s.apprCounts.a2}\nBox 3: ${s.apprCounts.a3}\nBox 4: ${s.apprCounts.a4}\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}">${fmt(s.approached)}</td>
+                <td class="${rowClass}" data-tooltip="${appTooltip}">${fmt(s.approached)}</td>
                 <td class="${rowClass}" data-tooltip="App. Converted: ${s.convDetail.appClmd}\nApp. Not Converted: ${s.convDetail.appNotClmd}\nConv. But Not Appr: ${s.convDetail.directClmd}" style="color:var(--brand-accent); font-weight:700;">${conv?conv+'%':''}</td>
                 <td class="${rowClass}" data-tooltip="Reloan: ${s.capR}\nNewloan: ${s.capN}" style="background:rgba(255,255,255,0.05)">${fmt(s.captured)}</td>
                 <td class="${rowClass}" data-tooltip="Total Captured Converted: ${s.capConvDetail.rClmd + s.capConvDetail.nClmd}\nTotal Captured Not Converted: ${s.capConvDetail.rNotClmd + s.capConvDetail.nNotClmd}" style="color:var(--brand-accent); font-weight:700;">${capConv?capConv+'%':''}</td>
@@ -248,11 +251,15 @@ window.renderDashboard = function() {
     area.capConvDetail.rNotClmd = Math.max(0, area.capR - area.capConvDetail.rClmd);
     area.capConvDetail.nNotClmd = Math.max(0, area.capN - area.capConvDetail.nClmd);
 
+    // Calculate Area Box Percentages
+    const getAP = (val) => area.approached > 0 ? Math.round((val / area.approached) * 100) + '%' : '0%';
+    const areaAppTooltip = `[CHECKBOXES]\nBox 1: ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\nBox 2: ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\nBox 3: ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\nBox 4: ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
+
     sFoot.innerHTML = `
         <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
             <td style="text-align:left;">AREA TOTAL</td>
             <td data-tooltip="${getTooltipText(area.prosDetail)}">${area.prospects}</td>
-            <td data-tooltip="[CHECKBOXES]\nBox 1: ${area.apprCounts.a1}\nBox 2: ${area.apprCounts.a2}\nBox 3: ${area.apprCounts.a3}\nBox 4: ${area.apprCounts.a4}\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}">${area.approached}</td>
+            <td data-tooltip="${areaAppTooltip}">${area.approached}</td>
             <td data-tooltip="App. Converted: ${area.convDetail.appClmd}\nApp. Not Converted: ${area.convDetail.appNotClmd}\nConv. But Not Appr: ${area.convDetail.directClmd}">${areaConv?areaConv+'%':''}</td>
             <td data-tooltip="Reloan: ${area.capR}\nNewloan: ${area.capN}">${area.captured}</td>
             <td data-tooltip="Total Captured Converted: ${area.capConvDetail.rClmd + area.capConvDetail.nClmd}\nTotal Captured Not Converted: ${area.capConvDetail.rNotClmd + area.capConvDetail.nNotClmd}">${areaCapConv?areaCapConv+'%':''}</td>
