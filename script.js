@@ -223,10 +223,13 @@ window.renderDashboard = function() {
         s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
         s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
 
-        // Calculate Box Percentages relative to total prospects
-        const getP = (val) => s.prospects > 0 ? Math.round((val / s.prospects) * 100) + '%' : '0%';
+        // Funnel Percentages for Branch
+        const p1 = s.prospects > 0 ? Math.round((s.apprCounts.a1 / s.prospects) * 100) : 0;
+        const p2 = s.apprCounts.a1 > 0 ? Math.round((s.apprCounts.a2 / s.apprCounts.a1) * 100) : 0;
+        const p3 = s.apprCounts.a2 > 0 ? Math.round((s.apprCounts.a3 / s.apprCounts.a2) * 100) : 0;
+        const p4 = s.apprCounts.a3 > 0 ? Math.round((s.apprCounts.a4 / s.apprCounts.a3) * 100) : 0;
 
-        const appTooltip = `[CHECKBOX PENETRATION vs PROSPECTS]\n1st Apps : ${s.apprCounts.a1} (${getP(s.apprCounts.a1)})\n2nd Apps : ${s.apprCounts.a2} (${getP(s.apprCounts.a2)})\n3rd Apps: ${s.apprCounts.a3} (${getP(s.apprCounts.a3)})\n4th Apps : ${s.apprCounts.a4} (${getP(s.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
+        const appTooltip = `[BOX FUNNEL ANALYSIS]\nBox 1/Pros: ${s.apprCounts.a1} (${p1}%)\nBox 2/Box 1: ${s.apprCounts.a2} (${p2}%)\nBox 3/Box 2: ${s.apprCounts.a3} (${p3}%)\nBox 4/Box 3: ${s.apprCounts.a4} (${p4}%)\n\n[STATUS BREAKDOWN]\nProc: ${s.appStatus.proc}\nPend: ${s.appStatus.pend}\nApp: ${s.appStatus.app}\nDisb: ${s.appStatus.disb}\nClmd: ${s.appStatus.clmd}\nFind: ${s.appStatus.find}`;
 
         const rowClass = (b === "Balingasag - Main2" || b === "Balingoan - Main2") ? "tooltip-top" : "";
 
@@ -252,11 +255,13 @@ window.renderDashboard = function() {
     area.capConvDetail.rNotClmd = Math.max(0, area.capR - area.capConvDetail.rClmd);
     area.capConvDetail.nNotClmd = Math.max(0, area.capN - area.capConvDetail.nClmd);
 
-    // Area-wide Penetration Calculation
-    const areaApproachRate = area.prospects > 0 ? Math.round((area.approached / area.prospects) * 100) + '%' : '0%';
-    const getAP = (val) => area.prospects > 0 ? Math.round((val / area.prospects) * 100) + '%' : '0%';
+    // Funnel Percentages for Area
+    const ap1 = area.prospects > 0 ? Math.round((area.apprCounts.a1 / area.prospects) * 100) : 0;
+    const ap2 = area.apprCounts.a1 > 0 ? Math.round((area.apprCounts.a2 / area.apprCounts.a1) * 100) : 0;
+    const ap3 = area.apprCounts.a2 > 0 ? Math.round((area.apprCounts.a3 / area.apprCounts.a2) * 100) : 0;
+    const ap4 = area.apprCounts.a3 > 0 ? Math.round((area.apprCounts.a4 / area.apprCounts.a3) * 100) : 0;
 
-    const areaAppTooltip = `[OVERALL AREA APPROACH RATE]\nApproached vs Prospects: ${areaApproachRate}\n\n[CHECKBOX PENETRATION vs PROSPECTS]\n1st Apps : ${area.apprCounts.a1} (${getAP(area.apprCounts.a1)})\n2nd Apps : ${area.apprCounts.a2} (${getAP(area.apprCounts.a2)})\n3rd Apps : ${area.apprCounts.a3} (${getAP(area.apprCounts.a3)})\n4th Apps : ${area.apprCounts.a4} (${getAP(area.apprCounts.a4)})\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
+    const areaAppTooltip = `[OVERALL AREA FUNNEL]\nBox 1/Pros: ${area.apprCounts.a1} (${ap1}%)\nBox 2/Box 1: ${area.apprCounts.a2} (${ap2}%)\nBox 3/Box 2: ${area.apprCounts.a3} (${ap3}%)\nBox 4/Box 3: ${area.apprCounts.a4} (${ap4}%)\n\n[STATUS BREAKDOWN]\nProc: ${area.appStatus.proc}\nPend: ${area.appStatus.pend}\nApp: ${area.appStatus.app}\nDisb: ${area.appStatus.disb}\nClmd: ${area.appStatus.clmd}\nFind: ${area.appStatus.find}`;
 
     sFoot.innerHTML = `
         <tr style="background:#020617; color:var(--brand-accent); font-weight:800;">
