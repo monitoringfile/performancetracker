@@ -110,6 +110,7 @@ window.renderDashboard = function() {
     const sFoot = document.getElementById('summaryFooter'); 
     const pSide = document.getElementById('sidebarProductBody');
     const query = document.getElementById('searchBar').value.toLowerCase();
+    const selBranch = document.getElementById('filterBranch').value; // ADDED BRANCH FILTER
     const selDay = document.getElementById('filterDay').value;
     const selStatus = document.getElementById('filterStatus').value;
     
@@ -195,7 +196,8 @@ window.renderDashboard = function() {
             }
 
             const matchSearch = (rec.clientName?.toLowerCase().includes(query) || rec.officer?.toLowerCase().includes(query) || rec.branch?.toLowerCase().includes(query) || rec.centre?.toLowerCase().includes(query));
-            if (matchSearch && (selDay === "" || rec.meetingDay === selDay) && (selStatus === "" || status === selStatus)) {
+            // MODIFIED CONDITION TO INCLUDE BRANCH FILTER
+            if (matchSearch && (selBranch === "" || rec.branch === selBranch) && (selDay === "" || rec.meetingDay === selDay) && (selStatus === "" || status === selStatus)) {
                 let rCls = ""; 
                 if (rec.isDefault === "1" || rec.isDefault?.toLowerCase() === "df" || rec.isDefault?.toLowerCase() === "yes") rCls = 'row-default';
                 else if (status === 'Findings') rCls = 'row-findings'; 
@@ -221,7 +223,7 @@ window.renderDashboard = function() {
         const conv = s.approached > 0 ? Math.round((s.clmdP / s.approached) * 100) : 0;
         const capConv = s.captured > 0 ? Math.round((s.clmd / s.captured) * 100) : 0;
         s.capConvDetail.rNotClmd = Math.max(0, s.capR - s.capConvDetail.rClmd);
-        s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nClmd);
+        s.capConvDetail.nNotClmd = Math.max(0, s.capN - s.capConvDetail.nNotClmd);
 
         // Funnel Percentages for Branch
         const p1 = s.prospects > 0 ? Math.round((s.apprCounts.a1 / s.prospects) * 100) : 0;
@@ -253,7 +255,7 @@ window.renderDashboard = function() {
     const areaConv = area.approached > 0 ? Math.round((area.clmdP / area.approached) * 100) : 0;
     const areaCapConv = area.captured > 0 ? Math.round((area.clmd / area.captured) * 100) : 0;
     area.capConvDetail.rNotClmd = Math.max(0, area.capR - area.capConvDetail.rClmd);
-    area.capConvDetail.nNotClmd = Math.max(0, area.capN - area.capConvDetail.nClmd);
+    area.capConvDetail.nNotClmd = Math.max(0, area.capN - area.capConvDetail.nNotClmd);
 
     // Funnel Percentages for Area
     const ap1 = area.prospects > 0 ? Math.round((area.apprCounts.a1 / area.prospects) * 100) : 0;
