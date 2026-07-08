@@ -1,26 +1,26 @@
 :root {
-    /* High-Tech Cyber Dashboard Palette */
-    --brand-primary: #00f2fe;      /* Neon Cyan / Cyber Blue */
-    --brand-accent: #4facfe;       /* Electric Tech Blue */
-    --brand-glow: rgba(0, 242, 254, 0.25);
+    /* High-Tech Quantum Amber & Obsidian Palette */
+    --brand-primary: #ffb700;      /* Cyber Amber / Titanium Gold */
+    --brand-accent: #f59e0b;       /* Core Warning Amber */
+    --brand-glow: rgba(255, 183, 0, 0.2);
     
-    --bg-dark: #060913;            /* Deep Space Void */
-    --bg-card: rgba(13, 20, 38, 0.7); /* Sleek Translucent Hull Slate */
-    --bg-sidebar: #090e1c;         /* Control Center Dark Command */
-    --border-glass: rgba(0, 242, 254, 0.12);
-    --border-bright: rgba(0, 242, 254, 0.3);
+    --bg-dark: #0a0908;            /* Quantum Obsidian Void */
+    --bg-card: rgba(26, 22, 16, 0.65); /* Translucent Carbon-Gold Slate */
+    --bg-sidebar: #110e0b;         /* Heavy Machinery Command Base */
+    --border-glass: rgba(255, 183, 0, 0.1);
+    --border-bright: rgba(255, 183, 0, 0.25);
     
-    --text-main: #e2eaec;          /* Crisp Tech Silver */
-    --text-dim: #73849a;           /* Radar Muted Sky */
+    --text-main: #f4f3ee;          /* Burnished Silver */
+    --text-dim: #8a817c;           /* Industrial Muted Stone */
     --sidebar-width: 290px; 
     
     /* Semantic Status Colors (Luminous Cyber) */
-    --success: #00ffaa;            /* Matrix Green */
-    --processing: #3b82f6;         /* Warp Core Blue */
-    --warning: #ffb700;            /* Alert Amber */
-    --danger: #ff4560;             /* Critical Red */
-    --info: #00f2fe;
-    --neutral-gray: #475569;
+    --success: #10b981;            /* Tactical Green */
+    --processing: #3b82f6;         /* Overdrive Blue */
+    --warning: #ffb700;            /* Grid Alert Amber */
+    --danger: #ef4444;             /* Terminal Critical Red */
+    --info: #06b6d4;
+    --neutral-gray: #4a4e69;
 }
 
 * { 
@@ -32,15 +32,15 @@
 /* Custom Scrollbars for High-Tech HUD Feel */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 20px; }
+::-webkit-scrollbar-thumb { background: rgba(255, 183, 0, 0.2); border-radius: 20px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
 
 body { 
     font-family: 'Plus Jakarta Sans', sans-serif; 
     background-color: var(--bg-dark); 
     background-image: 
-        radial-gradient(at 0% 0%, rgba(7, 40, 74, 0.4) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(13, 16, 43, 0.5) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(41, 29, 4, 0.4) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(19, 15, 11, 0.5) 0px, transparent 50%);
     color: var(--text-main); 
     margin: 0; 
     display: flex; 
@@ -53,25 +53,25 @@ body {
 #login-overlay { 
     position: fixed; 
     inset: 0; 
-    background: radial-gradient(circle at center, #0d1a30 0%, var(--bg-dark) 100%); 
+    background: radial-gradient(circle at center, #1c140a 0%, var(--bg-dark) 100%); 
     z-index: 5000; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
 }
 .auth-box { 
-    background: rgba(10, 17, 36, 0.85); 
+    background: rgba(17, 14, 11, 0.9); 
     padding: 45px 40px; 
     border-radius: 20px; 
     border: 1px solid var(--border-bright); 
-    box-shadow: 0 0 40px rgba(0, 242, 254, 0.15), inset 0 0 20px rgba(0, 242, 254, 0.05); 
+    box-shadow: 0 0 40px rgba(255, 183, 0, 0.1), inset 0 0 20px rgba(255, 183, 0, 0.03); 
     backdrop-filter: blur(20px);
     width: 390px; 
     text-align: center; 
 }
 .auth-input { 
-    background: rgba(4, 7, 18, 0.8); 
-    border: 1px solid rgba(0, 242, 254, 0.2); 
+    background: rgba(10, 9, 8, 0.8); 
+    border: 1px solid rgba(255, 183, 0, 0.15); 
     color: #fff; 
     padding: 14px 18px; 
     border-radius: 10px; 
@@ -85,12 +85,12 @@ body {
 }
 .auth-input:focus { 
     border-color: var(--brand-primary); 
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-    background: #040712;
+    box-shadow: 0 0 15px rgba(255, 183, 0, 0.15);
+    background: #0a0908;
 }
 .auth-btn { 
     background: linear-gradient(135deg, var(--brand-accent), var(--brand-primary)); 
-    color: #040712; 
+    color: #0a0908; 
     border: none; 
     padding: 14px; 
     border-radius: 10px; 
@@ -98,12 +98,12 @@ body {
     letter-spacing: 1.5px;
     cursor: pointer; 
     width: 100%; 
-    box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 183, 0, 0.2);
     transition: all 0.3s ease;
 }
 .auth-btn:hover { 
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 242, 254, 0.5);
+    box-shadow: 0 6px 25px rgba(255, 183, 0, 0.35);
     filter: brightness(1.1);
 }
 
@@ -112,7 +112,7 @@ body {
     position: fixed; 
     bottom: 30px; 
     left: 30px; 
-    background: rgba(0, 255, 170, 0.15); 
+    background: rgba(16, 185, 129, 0.1); 
     color: var(--success);
     padding: 14px 28px; 
     border-radius: 10px; 
@@ -124,7 +124,7 @@ body {
     display: none; 
     z-index: 10000; 
     animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 255, 170, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(16, 185, 129, 0.1);
 }
 @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
@@ -136,7 +136,7 @@ body {
     flex-direction: row; 
 }
 
-/* SIDEBAR STYLES (Cyber Terminal Command Tower) */
+/* SIDEBAR STYLES */
 .sidebar { 
     width: var(--sidebar-width); 
     background: var(--bg-sidebar); 
@@ -147,12 +147,12 @@ body {
     display: flex; 
     flex-direction: column; 
     z-index: 50;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
 }
 .sidebar-brand { 
     padding: 0 0.5rem 2.5rem 0.5rem; 
-    border-bottom: 1px dashed rgba(0, 242, 254, 0.15);
+    border-bottom: 1px dashed rgba(255, 183, 0, 0.15);
     margin-bottom: 1.5rem;
 }
 .brand-logo { 
@@ -160,18 +160,18 @@ body {
     font-weight: 900; 
     letter-spacing: 1px; 
     color: #ffffff; 
-    text-shadow: 0 0 10px rgba(255,255,255,0.1);
+    text-shadow: 0 0 10px rgba(255,255,255,0.05);
 }
 .brand-tag { 
     display: inline-block; 
     margin-top: 10px; 
-    background: rgba(0, 242, 254, 0.08); 
+    background: rgba(255, 183, 0, 0.05); 
     color: var(--brand-primary); 
     font-size: 0.65rem; 
     font-weight: 800; 
     padding: 4px 10px; 
     border-radius: 5px; 
-    border: 1px solid rgba(0, 242, 254, 0.25); 
+    border: 1px solid rgba(255, 183, 0, 0.2); 
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -192,23 +192,23 @@ body {
     border-left: 3px solid transparent;
 }
 .nav-link:hover { 
-    background: rgba(0, 242, 254, 0.05); 
+    background: rgba(255, 183, 0, 0.04); 
     color: #ffffff; 
     border-left: 3px solid var(--brand-accent); 
     padding-left: 20px;
 }
 .nav-link.active { 
-    background: rgba(0, 242, 254, 0.12); 
+    background: rgba(255, 183, 0, 0.08); 
     color: var(--brand-primary); 
     border-left: 3px solid var(--brand-primary); 
-    text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
-    box-shadow: inset 5px 0 15px rgba(0, 242, 254, 0.03);
+    text-shadow: 0 0 10px rgba(255, 183, 0, 0.2);
+    box-shadow: inset 5px 0 15px rgba(255, 183, 0, 0.02);
 }
 
 .product-mix-container { 
     margin-top: 24px; 
     padding: 1.25rem; 
-    background: rgba(4, 7, 18, 0.5); 
+    background: rgba(10, 9, 8, 0.5); 
     border-radius: 12px; 
     border: 1px solid var(--border-glass); 
 }
@@ -217,20 +217,20 @@ body {
 .active-users-container { 
     margin-top: 24px; 
     padding-top: 20px; 
-    border-top: 1px dashed rgba(0, 242, 254, 0.15); 
+    border-top: 1px dashed rgba(255, 183, 0, 0.15); 
 }
 .user-pill {
     display: flex; 
     align-items: center; 
     gap: 10px; 
-    background: rgba(4, 7, 18, 0.6);
+    background: rgba(10, 9, 8, 0.6);
     padding: 8px 14px; 
     border-radius: 8px; 
     margin-bottom: 8px; 
     font-size: 0.75rem;
     font-weight: 700;
     color: var(--text-main);
-    border: 1px solid rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.01);
 }
 .status-dot { 
     width: 7px; 
@@ -255,19 +255,19 @@ body {
     border-radius: 16px; 
     border: 1px solid var(--border-glass); 
     backdrop-filter: blur(15px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35); 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); 
     margin-bottom: 2.5rem; 
     overflow: visible !important; 
 }
 
-/* HIGH-TECH TABLE ENGINE */
+/* HUD TABLE ENGINE */
 .summary-table, .master-table { 
     width: 100%; 
     border-collapse: separate; 
     border-spacing: 0; 
 }
 .summary-table th, .master-table th { 
-    background: rgba(6, 9, 19, 0.85); 
+    background: rgba(13, 11, 9, 0.9); 
     padding: 16px 18px; 
     font-size: 0.7rem; 
     color: var(--brand-primary); 
@@ -281,16 +281,16 @@ body {
     padding: 16px 18px; 
     text-align: center; 
     font-size: 0.85rem; 
-    border-bottom: 1px solid rgba(0, 242, 254, 0.05); 
+    border-bottom: 1px solid rgba(255, 183, 0, 0.04); 
     color: var(--text-main); 
     position: relative; 
     transition: background 0.15s ease;
 }
 .summary-table tbody tr:hover td, .master-table tbody tr:hover td {
-    background: rgba(0, 242, 254, 0.03);
+    background: rgba(255, 183, 0, 0.02);
 }
 
-/* LUXE TRANSLUCENT TOOLTIPS */
+/* TRANSLUCENT TOOLTIPS */
 [data-tooltip] { 
     cursor: help; 
     position: relative; 
@@ -301,7 +301,7 @@ body {
     bottom: 130%; 
     left: 50%; 
     transform: translateX(-50%);
-    background: rgba(9, 14, 28, 0.95); 
+    background: rgba(17, 14, 11, 0.95); 
     color: #ffffff; 
     padding: 12px 16px; 
     border-radius: 10px; 
@@ -309,7 +309,7 @@ body {
     font-family: monospace;
     white-space: pre-wrap; 
     z-index: 10000; 
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 242, 254, 0.15); 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 183, 0, 0.1); 
     border: 1px solid var(--border-bright); 
     backdrop-filter: blur(10px);
     text-align: left; 
@@ -322,9 +322,9 @@ body {
 .tooltip-top[data-tooltip]:hover::after { bottom: auto !important; top: 130% !important; }
 #summaryFooter [data-tooltip]:hover::after { bottom: 130% !important; top: auto !important; }
 
-/* SEARCH & CONTROLS HUD DOCK */
+/* SEARCH DOCK */
 .search-container { 
-    background: rgba(13, 20, 38, 0.5); 
+    background: rgba(26, 22, 16, 0.4); 
     padding: 14px; 
     border-radius: 12px; 
     display: flex; 
@@ -334,26 +334,26 @@ body {
     backdrop-filter: blur(10px);
 }
 
-/* HIGH-TECH INTERACTION LIGHTBOX / MODALS */
+/* INTERACTION MODALS */
 .modal-overlay { 
     display:none; 
     position:fixed; 
     top:0; left:0; width:100%; height:100%; 
-    background:rgba(3, 5, 11, 0.85); 
+    background:rgba(5, 5, 4, 0.9); 
     z-index:3000; 
     align-items:center; 
     justify-content:center; 
     backdrop-filter: blur(12px); 
 }
 .modal-box-wide { 
-    background: rgba(13, 20, 38, 0.95); 
+    background: rgba(26, 22, 16, 0.95); 
     padding: 40px; 
     border-radius: 20px; 
     width: 1000px; 
     max-width: 95vw; 
     color: white; 
     border: 1px solid var(--border-bright); 
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 242, 254, 0.1); 
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 183, 0, 0.05); 
 }
 .form-grid { 
     display: grid; 
@@ -362,9 +362,9 @@ body {
     margin-bottom: 24px; 
 }
 
-/* REALTIME ACCOMPLISHMENT GRID FRAME */
+/* REALTIME TRACKER GRID FRAME */
 .captured-modal-box { 
-    background: #060913; 
+    background: #0a0908; 
     border-radius: 16px; 
     width: 95%; 
     height: 90vh; 
@@ -376,17 +376,17 @@ body {
 }
 .captured-scroll-area { overflow: auto; flex: 1; position: relative; }
 .captured-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.8rem; color: #cbd5e1; }
-.captured-table thead th { position: sticky; top: 0; background: #0f182e; z-index: 20; border-bottom: 2px solid var(--border-glass); border-right: 1px solid rgba(0,242,254,0.08); padding: 14px 10px; color: var(--brand-primary); font-weight: 700; }
-.captured-row-title { position: sticky; left: 0; background: #060913; z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: #fff; border-right: 1px solid var(--border-glass) !important; border-bottom: 1px solid rgba(0,242,254,0.08) !important; }
-.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #0f182e !important; border-bottom: 2px solid var(--border-glass) !important; }
-.captured-table td { border-bottom: 1px solid rgba(0,242,254,0.05); border-right: 1px solid rgba(0,242,254,0.05); padding: 10px; text-align: center; }
-.captured-table tbody tr:nth-child(even) { background: rgba(0, 242, 254, 0.01); }
-.captured-table tbody tr:hover { background: rgba(0, 242, 254, 0.04); }
+.captured-table thead th { position: sticky; top: 0; background: #191511; z-index: 20; border-bottom: 2px solid var(--border-glass); border-right: 1px solid rgba(255,183,0,0.05); padding: 14px 10px; color: var(--brand-primary); font-weight: 700; }
+.captured-row-title { position: sticky; left: 0; background: #0a0908; z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: #fff; border-right: 1px solid var(--border-glass) !important; border-bottom: 1px solid rgba(255,183,0,0.05) !important; }
+.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #191511 !important; border-bottom: 2px solid var(--border-glass) !important; }
+.captured-table td { border-bottom: 1px solid rgba(255,183,0,0.04); border-right: 1px solid rgba(255,183,0,0.04); padding: 10px; text-align: center; }
+.captured-table tbody tr:nth-child(even) { background: rgba(255, 183, 0, 0.01); }
+.captured-table tbody tr:hover { background: rgba(255, 183, 0, 0.03); }
 .branch-divider td { border-bottom: 2px solid var(--brand-accent) !important; }
 
 .captured-input { 
-    background: rgba(4, 7, 18, 0.6); 
-    border: 1px solid rgba(0, 242, 254, 0.2); 
+    background: rgba(10, 9, 8, 0.6); 
+    border: 1px solid rgba(255, 183, 0, 0.15); 
     color: #fff; 
     width: 48px; 
     text-align: center; 
@@ -398,24 +398,24 @@ body {
 .captured-input:focus { 
     background: #000; 
     border-color: var(--brand-primary); 
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    box-shadow: 0 0 10px rgba(255, 183, 0, 0.25);
     outline: none; 
 }
 
-/* TECHNICAL MATTE SEMANTIC ROWS (High performance states) */
-.row-default { background-color: rgba(0, 242, 254, 0.06) !important; }
+/* TECHNICAL MATTE SEMANTIC ROWS */
+.row-default { background-color: rgba(255, 183, 0, 0.05) !important; }
 .row-default td { color: var(--brand-primary) !important; font-weight: 600; }
 .row-process { background-color: rgba(59, 130, 246, 0.06) !important; }
-.row-claimed { background-color: rgba(255, 183, 0, 0.06) !important; }
-.row-disbursed { background-color: rgba(0, 255, 170, 0.06) !important; }
-.row-findings { background-color: rgba(255, 69, 96, 0.06) !important; }
+.row-claimed { background-color: rgba(245, 158, 11, 0.06) !important; }
+.row-disbursed { background-color: rgba(16, 185, 129, 0.06) !important; }
+.row-findings { background-color: rgba(239, 68, 68, 0.06) !important; }
 .row-pending { background-color: rgba(71, 85, 105, 0.1) !important; }
-.row-approved { background-color: rgba(0, 255, 170, 0.08) !important; }
+.row-approved { background-color: rgba(16, 185, 129, 0.08) !important; }
   
 /* SYSTEM FORM CONTROLS */
 .input-styled { 
-    background: rgba(4, 7, 18, 0.7); 
-    border: 1px solid rgba(0, 242, 254, 0.15); 
+    background: rgba(10, 9, 8, 0.7); 
+    border: 1px solid rgba(255, 183, 0, 0.12); 
     color: white; 
     padding: 12px 16px; 
     border-radius: 8px; 
@@ -426,15 +426,15 @@ body {
 }
 .input-styled:focus { 
     border-color: var(--brand-primary); 
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
-    background: #040712;
+    box-shadow: 0 0 10px rgba(255, 183, 0, 0.1);
+    background: #0a0908;
     outline: none; 
 }
 select.input-styled {
     cursor: pointer;
 }
 select.input-styled option {
-    background: #0d1426;
+    background: #1a1610;
     color: #fff;
 }
 label { 
@@ -447,7 +447,7 @@ label {
     letter-spacing: 1px; 
 }
 
-/* Checkbox Modernization for Approaches Column */
+/* Checkbox Alignment */
 td input[type="checkbox"] {
     accent-color: var(--brand-primary);
     transform: scale(1.15);
