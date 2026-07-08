@@ -1,27 +1,27 @@
 :root {
-    /* Vintage Flat Palette from Image */
-    --brand-primary: #f05a30;      /* Coral Orange Button Accent */
-    --brand-accent: #e04a20;       /* Darker Coral Active State */
+    /* Sandstone & Tech Navy Flat Palette */
+    --brand-primary: #3aa6b0;      /* Vintage Accent Teal */
+    --brand-accent: #2c858e;       /* Deeper Teal Active State */
     --brand-glow: transparent;
     
-    --bg-dark: #3d4e56;            /* Deep Slate Gray Main Background */
-    --bg-card: #e1dfcc;            /* Warm Off-White/Cream Card Container */
-    --bg-sidebar: #428b93;         /* Deep Flat Teal Sidebar */
-    --border-glass: rgba(61, 78, 86, 0.1);
-    --border-bright: rgba(61, 78, 86, 0.25);
+    --bg-dark: #1e293b;            /* Deep Tech Navy Main Background */
+    --bg-card: #f8f6f0;            /* Smooth Sandstone / Parchment White */
+    --bg-sidebar: #2a3b5c;         /* Subdued Slate Navy Sidebar */
+    --border-glass: rgba(30, 41, 59, 0.1);
+    --border-bright: rgba(30, 41, 59, 0.2);
     
-    --text-main: #2b373d;          /* Dark Charcoal Slate for High Readability */
+    --text-main: #1e293b;          /* Dark Navy Slate for High Readability */
     --text-light: #ffffff;         /* Crisp White Text for Dark Backgrounds */
-    --text-dim: #5c6e75;           /* Muted Deep Slate */
+    --text-dim: #64748b;           /* Muted Slate Gray */
     --sidebar-width: 290px; 
     
-    /* Exact Semantic Color Alignments from the Image Grid */
-    --success: #2ca953;            /* Flat Kelly/Mint Green */
-    --processing: #fcc247;         /* Flat Mustard Yellow */
-    --warning: #fcc247;            /* Flat Mustard Yellow */
-    --danger: #f05a30;             /* Flat Coral Orange */
-    --info: #428b93;               /* Flat Deep Teal */
-    --neutral-gray: #5c6e75;
+    /* Clean Matte Semantic Status Palette */
+    --success: #4fa175;            /* Soft Sage Green */
+    --processing: #e0a94a;         /* Matte Ochre Yellow */
+    --warning: #e0a94a;            
+    --danger: #d95f43;             /* Soft Terracotta Red */
+    --info: #3aa6b0;               
+    --neutral-gray: #64748b;
 }
 
 * { 
@@ -33,7 +33,7 @@
 /* Custom Scrollbars */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: rgba(240, 90, 48, 0.4); border-radius: 20px; }
+::-webkit-scrollbar-thumb { background: rgba(58, 166, 176, 0.4); border-radius: 20px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
 
 body { 
@@ -63,12 +63,12 @@ body {
     border-radius: 12px; 
     width: 390px; 
     text-align: center; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); 
     border: 1px solid var(--border-bright);
 }
 .auth-input { 
-    background: rgba(255, 255, 255, 0.7); 
-    border: 2px solid #c9c7b3; 
+    background: #fff; 
+    border: 2px solid #e2decb; 
     color: var(--text-main); 
     padding: 14px 18px; 
     border-radius: 8px; 
@@ -140,7 +140,7 @@ body {
 }
 .sidebar-brand { 
     padding: 0 0.5rem 2.5rem 0.5rem; 
-    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 1.5rem;
 }
 .brand-logo { 
@@ -153,7 +153,7 @@ body {
     display: inline-block; 
     margin-top: 10px; 
     background: var(--processing); 
-    color: var(--text-main); 
+    color: #1e293b; 
     font-size: 0.65rem; 
     font-weight: 800; 
     padding: 4px 12px; 
@@ -164,7 +164,7 @@ body {
 .nav-link { 
     padding: 12px 16px; 
     border-radius: 6px; 
-    color: #cbdce0; 
+    color: #94a3b8; 
     text-decoration: none; 
     font-weight: 600; 
     font-size: 0.85rem; 
@@ -176,7 +176,7 @@ body {
     transition: all 0.15s ease;
 }
 .nav-link:hover { 
-    background: rgba(255, 255, 255, 0.1); 
+    background: rgba(255, 255, 255, 0.05); 
     color: var(--text-light); 
 }
 .nav-link.active { 
@@ -187,7 +187,7 @@ body {
 .product-mix-container { 
     margin-top: 24px; 
     padding: 1.25rem; 
-    background: rgba(0, 0, 0, 0.12); 
+    background: rgba(0, 0, 0, 0.15); 
     border-radius: 8px; 
 }
 
@@ -195,13 +195,13 @@ body {
 .active-users-container { 
     margin-top: 24px; 
     padding-top: 20px; 
-    border-top: 2px solid rgba(255, 255, 255, 0.15); 
+    border-top: 2px solid rgba(255, 255, 255, 0.1); 
 }
 .user-pill {
     display: flex; 
     align-items: center; 
     gap: 10px; 
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
     padding: 8px 14px; 
     border-radius: 6px; 
     margin-bottom: 8px; 
@@ -211,7 +211,7 @@ body {
 .status-dot { 
     width: 8px; 
     height: 8px; 
-    background: var(--success); 
+    background: #4fa175; 
     border-radius: 50%; 
 }
 
@@ -230,7 +230,7 @@ body {
     border-radius: 12px; 
     margin-bottom: 2.5rem; 
     overflow: visible !important; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     border: 1px solid var(--border-bright);
 }
 
@@ -241,12 +241,12 @@ body {
     border-spacing: 0; 
 }
 .summary-table th, .master-table th { 
-    background: #d4d2be; 
+    background: #edeae0; 
     padding: 16px 18px; 
     font-size: 0.75rem; 
     color: var(--text-main); 
     font-weight: 700; 
-    border-bottom: 2px solid #c4c2ae; 
+    border-bottom: 2px solid #e2decb; 
     text-transform: uppercase; 
     text-align: center;
 }
@@ -254,12 +254,12 @@ body {
     padding: 16px 18px; 
     text-align: center; 
     font-size: 0.85rem; 
-    border-bottom: 1px solid #d4d2be; 
+    border-bottom: 1px solid #edeae0; 
     color: var(--text-main); 
     transition: background 0.1s ease;
 }
 .summary-table tbody tr:hover td, .master-table tbody tr:hover td {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
 }
 
 /* TOOLTIPS */
@@ -292,7 +292,7 @@ body {
 
 /* SEARCH DOCK */
 .search-container { 
-    background: rgba(255, 255, 255, 0.08); 
+    background: rgba(255, 255, 255, 0.05); 
     padding: 14px; 
     border-radius: 8px; 
     display: flex; 
@@ -306,7 +306,7 @@ body {
     display:none; 
     position:fixed; 
     top:0; left:0; width:100%; height:100%; 
-    background:rgba(61, 78, 86, 0.7); 
+    background:rgba(30, 41, 59, 0.7); 
     z-index:3000; 
     align-items:center; 
     justify-content:center; 
@@ -336,22 +336,22 @@ body {
     width: 95%; 
     height: 90vh; 
     overflow: auto; 
-    border: 2px solid #cbd2d6; 
+    border: 2px solid #cbd5e1; 
     display: flex; 
     flex-direction: column; 
 }
 .captured-scroll-area { overflow: auto; flex: 1; position: relative; }
 .captured-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.8rem; color: var(--text-main); }
-.captured-table thead th { position: sticky; top: 0; background: #d4d2be; z-index: 20; border-bottom: 2px solid #c4c2ae; border-right: 1px solid #c4c2ae; padding: 14px 10px; color: var(--text-main); font-weight: 700; }
-.captured-row-title { position: sticky; left: 0; background: var(--bg-card); z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: var(--text-main); border-right: 1px solid #c4c2ae !important; border-bottom: 1px solid #d4d2be !important; }
-.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #d4d2be !important; border-bottom: 2px solid #c4c2ae !important; }
-.captured-table td { border-bottom: 1px solid #d4d2be; border-right: 1px solid #d4d2be; padding: 10px; text-align: center; }
-.captured-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.15); }
-.captured-table tbody tr:hover { background: rgba(255,255,255,0.35); }
+.captured-table thead th { position: sticky; top: 0; background: #edeae0; z-index: 20; border-bottom: 2px solid #e2decb; border-right: 1px solid #e2decb; padding: 14px 10px; color: var(--text-main); font-weight: 700; }
+.captured-row-title { position: sticky; left: 0; background: var(--bg-card); z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: var(--text-main); border-right: 1px solid #e2decb !important; border-bottom: 1px solid #edeae0 !important; }
+.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #edeae0 !important; border-bottom: 2px solid #e2decb !important; }
+.captured-table td { border-bottom: 1px solid #edeae0; border-right: 1px solid #edeae0; padding: 10px; text-align: center; }
+.captured-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.2); }
+.captured-table tbody tr:hover { background: rgba(255,255,255,0.4); }
 
 .captured-input { 
     background: #fff; 
-    border: 2px solid #c4c2ae; 
+    border: 2px solid #cbd5e1; 
     color: #333; 
     width: 48px; 
     text-align: center; 
@@ -366,19 +366,19 @@ body {
 }
 
 /* SEMANTIC STATUS FLAT ROWS */
-.row-default { background-color: rgba(66, 139, 147, 0.15) !important; }
-.row-default td { color: #235b61 !important; font-weight: 700; }
-.row-process { background-color: rgba(252, 194, 71, 0.15) !important; }
-.row-claimed { background-color: rgba(240, 90, 48, 0.1) !important; }
-.row-disbursed { background-color: rgba(44, 169, 83, 0.15) !important; }
-.row-findings { background-color: rgba(240, 90, 48, 0.2) !important; }
+.row-default { background-color: rgba(58, 166, 176, 0.12) !important; }
+.row-default td { color: #1f5d63 !important; font-weight: 700; }
+.row-process { background-color: rgba(224, 169, 74, 0.12) !important; }
+.row-claimed { background-color: rgba(217, 95, 67, 0.1) !important; }
+.row-disbursed { background-color: rgba(79, 161, 117, 0.12) !important; }
+.row-findings { background-color: rgba(217, 95, 67, 0.18) !important; }
 .row-pending { background-color: rgba(0, 0, 0, 0.05) !important; }
-.row-approved { background-color: rgba(44, 169, 83, 0.25) !important; }
+.row-approved { background-color: rgba(79, 161, 117, 0.22) !important; }
   
 /* SYSTEM FORM CONTROLS */
 .input-styled { 
     background: #fff; 
-    border: 2px solid #c4c2ae; 
+    border: 2px solid #cbd5e1; 
     color: var(--text-main); 
     padding: 12px 16px; 
     border-radius: 6px; 
