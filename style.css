@@ -1,27 +1,27 @@
 :root {
-    /* Eye-Friendly Dark Slate & Teal Palette */
-    --brand-primary: #3aa6b0;      /* Vintage Accent Teal */
-    --brand-accent: #4ec3cf;       /* Slightly brighter teal for active hover states */
-    --brand-glow: rgba(58, 166, 176, 0.15);
+    /* Image-Aligned Deep Dark Theme Palette */
+    --brand-primary: #7a9d96;      /* Mist (Sophisticated primary UI element tint) */
+    --brand-accent: #cae4db;       /* Morning Sky (Bright active/hover accent) */
+    --brand-glow: rgba(122, 157, 150, 0.15);
     
-    --bg-dark: #0f172a;            /* Deep Midnight Canvas */
-    --bg-card: #1e293b;            /* Soft Slate Navy for Cards/Panels */
-    --bg-sidebar: #0b0f19;         /* Darker Navy for structural contrast */
-    --border-glass: rgba(255, 255, 255, 0.06);
-    --border-bright: rgba(255, 255, 255, 0.12);
+    --bg-dark: #001c26;            /* Deepened Cerulean Canvas for rich background */
+    --bg-card: #00303f;            /* True Cerulean (#00303F) for Structural Panels/Cards */
+    --bg-sidebar: #00232e;         /* Mid-tone Cerulean variation for structural depth */
+    --border-glass: rgba(202, 228, 219, 0.08); /* Morning Sky translucent border */
+    --border-bright: rgba(202, 228, 219, 0.18); /* Morning Sky defined border */
     
-    --text-main: #f8fafc;          /* Off-White for Crisp, Low-Strain Readability */
-    --text-light: #ffffff;         /* Pure White for Headings */
-    --text-dim: #94a3b8;           /* Muted Lavender-Gray for Labels & Secondary Text */
+    --text-main: #cae4db;          /* Morning Sky (#CAE4DB) for soft, high-contrast text */
+    --text-light: #ffffff;         /* Crisp White for bold structural emphasis */
+    --text-dim: #7a9d96;           /* Mist (#7A9D96) for subtext, labels, and muted states */
     --sidebar-width: 290px; 
     
-    /* Clean Matte Semantic Status Palette (Slightly adjusted for dark backgrounds) */
-    --success: #34d399;            /* Vibrant Sage Green */
-    --processing: #fbbf24;         /* Matte Ochre Yellow */
-    --warning: #fbbf24;            
-    --danger: #f87171;             /* Soft Terracotta Red */
-    --info: #3aa6b0;               
-    --neutral-gray: #64748b;
+    /* Clean Matte Semantic Status Palette adapted to blend with the new system */
+    --success: #7a9d96;            /* Mist acts cleanly as a soft structural success element */
+    --processing: #dcae1d;         /* Honey (#DCAE1D) handles warnings and ongoing states */
+    --warning: #dcae1d;            
+    --danger: #d95f43;             /* Soft Matte Terracotta remains for critical errors */
+    --info: #cae4db;               /* Morning Sky handles clean info alerts */
+    --neutral-gray: #536e69;
 }
 
 * { 
@@ -33,7 +33,7 @@
 /* Custom Scrollbars */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: rgba(58, 166, 176, 0.3); border-radius: 20px; }
+::-webkit-scrollbar-thumb { background: rgba(122, 157, 150, 0.3); border-radius: 20px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
 
 body { 
@@ -67,8 +67,8 @@ body {
     border: 1px solid var(--border-bright);
 }
 .auth-input { 
-    background: #111827;            /* Dark input field */
-    border: 2px solid #334155;     /* Subdued border */
+    background: #001c26;            
+    border: 2px solid #1a4553;     
     color: var(--text-main); 
     padding: 14px 18px; 
     border-radius: 8px; 
@@ -82,12 +82,12 @@ body {
 }
 .auth-input:focus { 
     border-color: var(--brand-primary); 
-    background: #0f172a;
+    background: #00232e;
     box-shadow: 0 0 10px var(--brand-glow);
 }
 .auth-btn { 
-    background: var(--brand-primary); 
-    color: var(--text-light); 
+    background: var(--processing); /* Honey Yellow Action Buttons for gorgeous visual pop */
+    color: #001c26;                /* Dark text on light background for optimal clarity */
     border: none; 
     padding: 14px; 
     border-radius: 8px; 
@@ -96,10 +96,10 @@ body {
     letter-spacing: 1px;
     cursor: pointer; 
     width: 100%; 
-    transition: background 0.2s ease;
+    transition: filter 0.2s ease;
 }
 .auth-btn:hover { 
-    background: var(--brand-accent); 
+    filter: brightness(1.15);
 }
 
 /* TOAST NOTIFICATION */
@@ -108,14 +108,14 @@ body {
     bottom: 30px; 
     left: 30px; 
     background: var(--success); 
-    color: #0f172a;                 /* Dark text on bright success background */
+    color: #001c26;                 
     padding: 14px 28px; 
     border-radius: 8px; 
     font-weight: 700; 
     font-size: 0.85rem;
     display: none; 
     z-index: 10000; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
 /* MAIN APP WRAPPER */
@@ -154,7 +154,7 @@ body {
     display: inline-block; 
     margin-top: 10px; 
     background: var(--processing); 
-    color: #1e293b; 
+    color: #001c26; 
     font-size: 0.65rem; 
     font-weight: 800; 
     padding: 4px 12px; 
@@ -177,18 +177,18 @@ body {
     transition: all 0.15s ease;
 }
 .nav-link:hover { 
-    background: rgba(255, 255, 255, 0.05); 
+    background: rgba(202, 228, 219, 0.05); 
     color: var(--text-light); 
 }
 .nav-link.active { 
     background: var(--brand-primary); 
-    color: var(--text-light); 
+    color: #001c26; 
 }
 
 .product-mix-container { 
     margin-top: 24px; 
     padding: 1.25rem; 
-    background: rgba(255, 255, 255, 0.03); 
+    background: rgba(0, 0, 0, 0.15); 
     border-radius: 8px; 
     border: 1px solid var(--border-glass);
 }
@@ -203,7 +203,7 @@ body {
     display: flex; 
     align-items: center; 
     gap: 10px; 
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(0, 0, 0, 0.15);
     padding: 8px 14px; 
     border-radius: 6px; 
     margin-bottom: 8px; 
@@ -214,7 +214,7 @@ body {
 .status-dot { 
     width: 8px; 
     height: 8px; 
-    background: var(--success); 
+    background: var(--processing); 
     border-radius: 50%; 
 }
 
@@ -244,12 +244,12 @@ body {
     border-spacing: 0; 
 }
 .summary-table th, .master-table th { 
-    background: #334155;            /* Dark header background */
+    background: #00232e;            
     padding: 16px 18px; 
     font-size: 0.75rem; 
     color: var(--text-light); 
     font-weight: 700; 
-    border-bottom: 2px solid #475569; 
+    border-bottom: 2px solid #1a4553; 
     text-transform: uppercase; 
     text-align: center;
 }
@@ -257,12 +257,12 @@ body {
     padding: 16px 18px; 
     text-align: center; 
     font-size: 0.85rem; 
-    border-bottom: 1px solid #334155; 
+    border-bottom: 1px solid #1a4553; 
     color: var(--text-main); 
     transition: background 0.1s ease;
 }
 .summary-table tbody tr:hover td, .master-table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(202, 228, 219, 0.03);
 }
 
 /* TOOLTIPS */
@@ -276,7 +276,7 @@ body {
     bottom: 130%; 
     left: 50%; 
     transform: translateX(-50%);
-    background: #0b0f19; 
+    background: #001c26; 
     color: var(--text-main); 
     padding: 12px 16px; 
     border-radius: 6px; 
@@ -296,7 +296,7 @@ body {
 
 /* SEARCH DOCK */
 .search-container { 
-    background: rgba(255, 255, 255, 0.03); 
+    background: rgba(0, 0, 0, 0.15); 
     padding: 14px; 
     border-radius: 8px; 
     display: flex; 
@@ -310,7 +310,7 @@ body {
     display:none; 
     position:fixed; 
     top:0; left:0; width:100%; height:100%; 
-    background:rgba(15, 23, 42, 0.8); /* Darkened and deepened blur effect */
+    background:rgba(0, 28, 38, 0.85); 
     z-index:3000; 
     align-items:center; 
     justify-content:center; 
@@ -346,16 +346,16 @@ body {
 }
 .captured-scroll-area { overflow: auto; flex: 1; position: relative; }
 .captured-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.8rem; color: var(--text-main); }
-.captured-table thead th { position: sticky; top: 0; background: #334155; z-index: 20; border-bottom: 2px solid #475569; border-right: 1px solid #475569; padding: 14px 10px; color: var(--text-light); font-weight: 700; }
-.captured-row-title { position: sticky; left: 0; background: var(--bg-card); z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: var(--text-light); border-right: 1px solid #334155 !important; border-bottom: 1px solid #334155 !important; }
-.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #475569 !important; border-bottom: 2px solid #64748b !important; }
-.captured-table td { border-bottom: 1px solid #334155; border-right: 1px solid #334155; padding: 10px; text-align: center; }
-.captured-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.01); }
-.captured-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+.captured-table thead th { position: sticky; top: 0; background: #00232e; z-index: 20; border-bottom: 2px solid #1a4553; border-right: 1px solid #1a4553; padding: 14px 10px; color: var(--text-light); font-weight: 700; }
+.captured-row-title { position: sticky; left: 0; background: var(--bg-card); z-index: 15; min-width: 200px; text-align: left !important; padding: 12px 18px !important; font-weight: 700; color: var(--text-light); border-right: 1px solid #1a4553 !important; border-bottom: 1px solid #1a4553 !important; }
+.frozen-intersection { position: sticky; top: 0; left: 0; z-index: 100 !important; background: #1a4553 !important; border-bottom: 2px solid #2e5d6d !important; }
+.captured-table td { border-bottom: 1px solid #1a4553; border-right: 1px solid #1a4553; padding: 10px; text-align: center; }
+.captured-table tbody tr:nth-child(even) { background: rgba(0,0,0,0.1); }
+.captured-table tbody tr:hover { background: rgba(202, 228, 219, 0.04); }
 
 .captured-input { 
-    background: #111827; 
-    border: 2px solid #334155; 
+    background: #001c26; 
+    border: 2px solid #1a4553; 
     color: var(--text-main); 
     width: 48px; 
     text-align: center; 
@@ -369,25 +369,25 @@ body {
     outline: none; 
 }
 
-/* SEMANTIC STATUS FLAT ROWS (Rebalanced contrast ratios for Dark Mode text) */
-.row-default { background-color: rgba(58, 166, 176, 0.15) !important; }
-.row-default td { color: #a5f3fc !important; font-weight: 700; }
-.row-process { background-color: rgba(224, 169, 74, 0.15) !important; }
+/* SEMANTIC STATUS FLAT ROWS (Polished overlay filters to maintain context readability) */
+.row-default { background-color: rgba(122, 157, 150, 0.18) !important; }
+.row-default td { color: #ffffff !important; font-weight: 700; }
+.row-process { background-color: rgba(220, 174, 29, 0.15) !important; }
 .row-process td { color: #fde047 !important; }
 .row-claimed { background-color: rgba(217, 95, 67, 0.15) !important; }
 .row-claimed td { color: #fca5a5 !important; }
-.row-disbursed { background-color: rgba(79, 161, 117, 0.15) !important; }
-.row-disbursed td { color: #6ee7b7 !important; }
+.row-disbursed { background-color: rgba(122, 157, 150, 0.25) !important; }
+.row-disbursed td { color: #cae4db !important; }
 .row-findings { background-color: rgba(217, 95, 67, 0.22) !important; }
 .row-findings td { color: #fee2e2 !important; }
-.row-pending { background-color: rgba(255, 255, 255, 0.05) !important; }
-.row-approved { background-color: rgba(79, 161, 117, 0.25) !important; }
-.row-approved td { color: #34d399 !important; }
+.row-pending { background-color: rgba(255, 255, 255, 0.03) !important; }
+.row-approved { background-color: rgba(202, 228, 219, 0.15) !important; }
+.row-approved td { color: #ffffff !important; }
   
 /* SYSTEM FORM CONTROLS */
 .input-styled { 
-    background: #111827; 
-    border: 2px solid #334155; 
+    background: #001c26; 
+    border: 2px solid #1a4553; 
     color: var(--text-main); 
     padding: 12px 16px; 
     border-radius: 6px; 
@@ -403,7 +403,7 @@ body {
     box-shadow: 0 0 8px var(--brand-glow);
 }
 select.input-styled option {
-    background: #1e293b;
+    background: var(--bg-card);
     color: var(--text-main);
 }
 label { 
